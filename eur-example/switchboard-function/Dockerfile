@@ -2,10 +2,10 @@
 FROM switchboardlabs/sgx-function AS builder
 
 WORKDIR /home/root/basic-oracle-example/switchboard-function
-COPY ./switchboard-functions/Cargo.lock \
-     ./switchboard-functions/Cargo.toml \
+COPY ./switchboard-function/Cargo.lock \
+     ./switchboard-function/Cargo.toml \
      ./
-COPY ./switchboard-functions/src/ ./src/
+COPY ./switchboard-function/src/ ./src/
 
 RUN --mount=type=cache,target=/usr/local/cargo/registry,id=${TARGETPLATFORM} \
     --mount=type=cache,target=target,id=${TARGETPLATFORM} \
