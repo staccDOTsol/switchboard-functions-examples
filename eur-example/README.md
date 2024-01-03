@@ -54,6 +54,3 @@ And we can test it in production like so:
 And we can simulate before deploying via:
 
 ```sb solana function test --devnetSimulate```
-```
-
-
