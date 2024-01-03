@@ -45,6 +45,7 @@ pub async fn sb_function(
 ) -> Result<Vec<Instruction>, SbFunctionError> {
     let price = fetch_price().await.map_err(|_| Error::FetchError)?;
     let price_ix = runner.upsert_feed(&to_u8_array("EUR_USD"), price);
+    println!("price feed: {:?}", price_ix.0);
     Ok(vec![price_ix.1])
 }
 
