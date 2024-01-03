@@ -49,7 +49,9 @@ And then fund it:
 
 And we can test it in production like so:
 
-```sb solana function test```
+```sb solana function test --function=$FUNCTION_ID --asRoutine```
+
+You may find your price feed pubkey in the test logs under the line: `price feed:`
 
 And we can simulate before deploying via:
 
