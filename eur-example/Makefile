@@ -5,9 +5,9 @@
 .PHONY: build publish
 
 # Variables
-DOCKERHUB_ORGANIZATION ?= switchboardlabs
+DOCKERHUB_ORGANIZATION ?= jrsdunn
 NAME = eur_usd
-VERSION = v1
+VERSION = latest
 
 check_docker_env:
 ifeq ($(strip $(DOCKERHUB_ORGANIZATION)),)
@@ -41,10 +41,10 @@ docker_build: check_docker_env
 	docker buildx build --pull --platform linux/amd64 \
 		-f ./switchboard-function/Dockerfile \
 		-t ${DOCKERHUB_ORGANIZATION}/${NAME}:${VERSION} \
-		./
+		./ --tag qvn --builder hydrobuild
 docker_publish: check_docker_env
 	docker buildx build --pull --platform linux/amd64 \
 		-f ./switchboard-function/Dockerfile \
 		-t ${DOCKERHUB_ORGANIZATION}/${NAME}:${VERSION} \
 		--push \
-		./
+		./ --tag qvn --builder hydrobuild

@@ -6,6 +6,8 @@ COPY ./switchboard-function/Cargo.lock \
      ./switchboard-function/Cargo.toml \
      ./
 COPY ./switchboard-function/src/ ./src/
+COPY ./switchboard-function/sbv3/ ./sbv3/
+
 
 RUN --mount=type=cache,target=/usr/local/cargo/registry,id=${TARGETPLATFORM} \
     --mount=type=cache,target=target,id=${TARGETPLATFORM} \
