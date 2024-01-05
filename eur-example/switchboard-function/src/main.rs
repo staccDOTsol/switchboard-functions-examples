@@ -7,6 +7,7 @@ use switchboard_solana::prelude::*;
 use switchboard_utils::task::http_task;
 use switchboard_utils::utils::median;
 use switchboard_utils::FromStr;
+use serde::{Serialize, Deserialize};
 use tokio;
 
 fn to_u8_array(input: &str) -> [u8; 32] {
@@ -16,26 +17,44 @@ fn to_u8_array(input: &str) -> [u8; 32] {
     array[..length].copy_from_slice(&bytes[..length]);
     array
 }
-
-pub async fn fetch_all<T, E>(
-    v: Vec<Pin<Box<impl Future<Output = Result<T, E>>>>>,
-) -> Result<Vec<T>, E> {
-    join_all(v).await.into_iter().collect()
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Response {
+    pub string: String,
+    pub limit: i32,
+    pub next: Option<String>,
+    pub offset: i32,
+    pub previous: Option<String>,
+    pub total: i32,
+    pub items: Vec<ArtistObject>,
 }
 
-pub async fn fetch_price() -> Result<Decimal, Box<dyn std::error::Error>> {
-    let futures: Vec<_> = vec![
-        Box::pin(http_task("https://api.exchangeratesapi.io/v1/latest?access_key=dd4a59e3a67c336dc4c06e1a8265190c&base=EUR", Some("$.rates.USD"))),
-        Box::pin(http_task("https://v6.exchangerate-api.com/v6/769ac8b9ef23e9c001b9c53e/latest/EUR", Some("$.conversion_rates.USD"))),
-        Box::pin(http_task("https://api.fastforex.io/fetch-one?from=EUR&to=USD&api_key=2ebd46374f-5958df7e94-s6nz5u", Some("$.result.USD"))),
-    ];
-    let responses: Vec<Option<Decimal>> = fetch_all(futures)
-        .await?
-        .into_iter()
-        .map(|x| Decimal::from_str(&x.to_string()).ok())
-        .collect();
-    println!("responses: {:?}", responses);
-    Ok(median(responses.into_iter().filter_map(|x| x).collect()))
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ArtistObject {
+    pub external_urls: ExternalUrls,
+    pub followers: Followers,
+    pub genres: Vec<String>,
+    pub href: String,
+    pub id: String,
+    pub images: Vec<ImageObject>,
+    pub name: String,
+    pub popularity: i32,
+    pub r#type: String,
+    pub uri: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ExternalUrls {
+    // Add fields as per your requirement
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Followers {
+    // Add fields as per your requirement
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ImageObject {
+    // Add fields as per your requirement
 }
 
 #[switchboard_function]
@@ -43,23 +62,46 @@ pub async fn sb_function(
     runner: FunctionRunner,
     _: Vec<u8>,
 ) -> Result<Vec<Instruction>, SbFunctionError> {
-    let price = fetch_price().await.map_err(|_| Error::FetchError)?;
-    let price_ix = runner.upsert_feed(&to_u8_array("EUR_USD"), price);
-    println!("price feed: {:?}", price_ix.0);
-    Ok(vec![price_ix.1])
+    let sb_secrets = switchboard_solana::secrets::fetch_secrets("CaXvt6DsYGZevj7AmVd5FFYboyd8vLAEioPaQ7qbydMb", None)
+    .await;
+    if sb_secrets.is_err(){
+        return Err(Error::FetchError.into());
+    }
+    let sb_secrets = sb_secrets.unwrap();
+    let auth_token = sb_secrets.keys.get("jarettrsdunn@gmail.com");
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers
+        .insert(
+            reqwest::header::AUTHORIZATION,
+            reqwest::header::HeaderValue::from_str(&format!("Bearer {}", auth_token.unwrap())).unwrap(),
+        );
+
+    let result = reqwest::Client::new()
+        .get("https://api.spotify.com/v1/me/top/artists")
+        .headers(headers)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+
+    let response: Response = serde_json::from_str(&result).unwrap();
+    let spotify_artists = response.items
+    .iter()
+    .map(|artist| artist.name.clone())
+    .collect::<Vec<String>>();
+
+    let saved: Decimal = Decimal::from_str(&format!("{}", spotify_artists.len())).unwrap();
+    let spotify_ix = runner.upsert_feed(&to_u8_array("stacc's top spotify artists"), saved);
+
+    println!("spotify feed key: {:?}", spotify_ix.0);
+    println!("spotify feed values: {:?}", spotify_ix.1);
+
+    Ok(vec![spotify_ix.1])
 }
 
 #[sb_error]
 pub enum Error {
     FetchError,
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[tokio::test]
-    async fn test_fetch_exchange_rates() {
-        fetch_price().await.unwrap();
-    }
 }
