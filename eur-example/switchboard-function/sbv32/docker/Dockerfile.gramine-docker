@@ -1,0 +1,120 @@
+# syntax=docker/dockerfile:1.4
+
+# https://hub.docker.com/r/gramineproject/gramine
+FROM gramineproject/gramine:v1.5
+
+LABEL "org.opencontainers.image.vendor"="Switchboard Labs"
+LABEL "org.opencontainers.image.title"="Switchboard SGX Base Image"
+LABEL "org.opencontainers.image.source"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.url"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.description"="Container used for code executed within a secure enclave"
+
+ENV CPATH="/opt/intel/sgx-aesm-service/aesm"
+ENV PATH="${CPATH}:${PATH}" 
+ENV AZDCAP_DEBUG_LOG_LEVEL="ERROR"
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV DISTRO="ubuntu20.04-server"
+
+RUN groupadd sgx
+RUN usermod -aG sgx root
+
+RUN groupadd sgx_prv
+RUN usermod -aG sgx_prv root
+
+RUN mkdir -p /data/protected_files && \
+    mkdir /sgx && \
+    mkdir /app && \
+    mkdir -p /etc/init && \
+    mkdir -p /var/run/aesmd && \
+    mkdir -p /etc/docker && \
+    touch /etc/modules
+
+RUN chmod 0755 /var/run/aesmd 
+
+###############################################################
+### Linux Setup
+###############################################################
+# Add Azure DCAP registry
+RUN curl -fsSLo /usr/share/keyrings/microsoft.asc https://packages.microsoft.com/keys/microsoft.asc
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.asc] https://packages.microsoft.com/ubuntu/20.04/prod focal main" | \
+    tee /etc/apt/sources.list.d/msprod.list
+
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt -y install \
+    apt-transport-https \
+    az-dcap-client \
+    build-essential \
+    ca-certificates \
+    clang \
+    clang-10 \
+    cmake \
+    cracklib-runtime \
+    curl \
+    dbus \
+    debhelper \
+    gcc \
+    gdb \
+    gnupg-agent \
+    libboost-dev \
+    libboost-system-dev \
+    libboost-thread-dev \
+    libcurl4-openssl-dev \
+    libprotobuf-c-dev \
+    libprotobuf-dev \
+    libprotobuf17 \
+    libssl-dev \
+    libsystemd0 \
+    linux-headers-azure \
+    linux-tools-azure \
+    lsb-release \
+    make \
+    net-tools \
+    nodejs \
+    openssl \
+    pkg-config \
+    protobuf-c-compiler \
+    protobuf-compiler \
+    python3 \
+    software-properties-common \
+    unzip \
+    vim \
+    wget \
+    xxd
+
+###############################################################
+### Rust SETUP
+###############################################################
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}" 
+RUN cargo install cargo-strip 
+
+###############################################################
+### DOCKER SETUP
+###############################################################
+# Need to add this after installing apt-transport-https, software-properties-common, lsb_release
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt -y install \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-ce \
+    docker-ce-cli \
+    docker-compose-plugin \
+    fuse-overlayfs
+RUN usermod -aG docker root
+RUN curl https://raw.githubusercontent.com/stepchowfun/docuum/main/install.sh -LSfs | sh
+
+RUN echo "{ \"storage-driver\": \"fuse-overlayfs\", \"seccomp-profile\": \"/configs/seccomp.json\" }" > /etc/docker/daemon.json
+
+###############################################################
+### Config Files (Copy last to avoid cache busting)
+###############################################################
+COPY configs/seccomp.json /configs/seccomp.json
+COPY configs/sgx_default_qcnl.conf /etc/sgx_default_qcnl.conf
+
+WORKDIR /app
+
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/restart_aesm.sh ; exec /bin/bash"]

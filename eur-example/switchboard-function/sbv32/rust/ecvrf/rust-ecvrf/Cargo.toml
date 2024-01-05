@@ -1,0 +1,31 @@
+[package]
+name = "rust_ecvrf"
+version = "1.0.0"
+authors = ["Jude Nelson <judecn@gmail.com>"]
+license = "GPLv3"
+homepage = "https://github.com/jcnelson/rust-ecvrf"
+repository = "https://github.com/jcnelson/rust-ecrf"
+description = "Rust tool for generating and verifying ECVRFs on the Ed25519 curve using the Ristretto group"
+keywords = [ "cryptography", "vrf" ]
+readme = "README.md"
+
+[dependencies]
+sha2 = "0.8.0"
+serde = "1"
+serde_derive = "1"
+bincode = "1.0.1"
+rand = "=0.7.0"
+
+[dependencies.ed25519-dalek]
+# version = "1.0.0-pre.0"
+version = "1.0.1"
+features = ["serde"]
+
+[dependencies.curve25519-dalek]
+# version = "1.0.0-pre.0"
+version = "3.2.1"
+features = ["serde"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "rust_ecvrf"

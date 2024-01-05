@@ -1,0 +1,149 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/mgild/projects/sbv3/chains/evm/examples/functions/01_randomness_callback/contracts/receive-randomness/contracts/ReceiverExample/ReceiverExample.sol": {
+      "lastModificationDate": 1689697559008,
+      "contentHash": "173d5ea064ac586bc9e74e1c99b140f5",
+      "sourceName": "contracts/ReceiverExample/ReceiverExample.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Recipient.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ReceiverExample"
+      ]
+    },
+    "/Users/mgild/projects/sbv3/chains/evm/examples/functions/01_randomness_callback/contracts/receive-randomness/contracts/ReceiverExample/Recipient.sol": {
+      "lastModificationDate": 1689697559008,
+      "contentHash": "1b6895c0d93dec6a1fc3302bac1e4a0e",
+      "sourceName": "contracts/ReceiverExample/Recipient.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Recipient"
+      ]
+    },
+    "/Users/mgild/projects/sbv3/devops/chains/arbitrum/pager/functions/01_randomness_callback/contracts/receive-randomness/contracts/ReceiverExample/ReceiverExample.sol": {
+      "lastModificationDate": 1691411953502,
+      "contentHash": "45f9fdcfe065f01ead983d2589a4fa00",
+      "sourceName": "contracts/ReceiverExample/ReceiverExample.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Recipient.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ReceiverExample"
+      ]
+    },
+    "/Users/mgild/projects/sbv3/devops/chains/arbitrum/pager/functions/01_randomness_callback/contracts/receive-randomness/contracts/ReceiverExample/Recipient.sol": {
+      "lastModificationDate": 1691411541495,
+      "contentHash": "1b6895c0d93dec6a1fc3302bac1e4a0e",
+      "sourceName": "contracts/ReceiverExample/Recipient.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Recipient"
+      ]
+    }
+  }
+}

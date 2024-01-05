@@ -1,0 +1,8 @@
+[package]
+name = "switchboard-node-metrics"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+prometheus = "0.13"
+prometheus-client = "0.21.2"

@@ -1,0 +1,38 @@
+[package]
+name = "switchboard-container-utils"
+version = "0.1.9"
+edition = "2021"
+description = "Rust library to interact and manage containers."
+readme = "README.md"
+homepage = "https://switchboard.xyz"
+license = "MIT"
+
+[features]
+default = []
+all = []
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+async-trait = "0.1.73"
+bollard = "0.15.0"
+bs58 = "0.5.0"
+dashmap = { version = "5.5.3", features = ["serde"] }
+envy = "0.4.2"
+futures = "0.3"
+futures-util = "0.3"
+hex = { version = "0.4.3", features = ["serde"] }
+hyper = "0.14"
+hyper-timeout = "0.4.1"
+json_env_logger = "0.1"
+kv-log-macro = "1.0.7"
+log = { version = "0.4", features = ["kv_unstable_std"] }
+miette = { version = "5", features = ["fancy"] }
+regex = "1.9.5"
+serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
+switchboard-common = { version = "0.11.0", path = "../switchboard-common", features = [
+    "client",
+] }
+tokio = { version = "1.33.0", features = ["full"] }
+tokio-tar = "0.3"
+tokio-util = { version = "0.7", features = ["io"] }

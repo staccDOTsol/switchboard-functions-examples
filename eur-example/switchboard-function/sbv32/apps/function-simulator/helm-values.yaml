@@ -1,0 +1,12 @@
+logLevel: none,function-simulator=debug
+image: switchboardlabs/function-simulator:dev-RC_10_06_23_16_28
+host:
+  ip: 51.104.209.230
+  port: 8080
+solana:
+  mainnetRpc: "https://switchboard.rpcpool.com/ec20ad2831092cfcef66d677539a"
+  devnetRpc: "https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14"
+ingress:
+  host: functions.switchboard.xyz
+certManager:
+  email: "scott@switchboard.xyz"

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Operator Dashboard</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <table id="results">
+        <tr>
+            <th>Chain</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Network</th>
+            <th>Balance</th>
+            <th>Funding</th>
+        </tr>
+    </table>
+
+    <script>
+        window.onload = function() {
+            var data = <%- watchlist %>;
+         
+            var data_old = [
+                {
+                    "chain": "arbitrum",
+                    "name": "payer",
+                    "address": "0x4e92B2A0376E14940417DE5c0Ca55AE613ca0351",
+                    "network": "testnet"
+                },
+                {
+                    "chain": "arbitrum",
+                    "name": "payer",
+                    "address": "0x4e92B2A0376E14940417DE5c0Ca55AE613ca0351",
+                    "network": "mainnet"
+                },
+                {
+                    "chain": "coredao",
+                    "name": "payer",
+                    "address": "0x4e92B2A0376E14940417DE5c0Ca55AE613ca0351",
+                    "network": "testnet"
+                },
+                // {
+                //     "chain": "coredao",
+                //     "name": "payer",
+                //     "address": "0x4e92B2A0376E14940417DE5c0Ca55AE613ca0351",
+                //     "network": "mainnet"
+                // },
+                // mainnet escrow
+                {
+                    "chain": "starknet",
+                    "name": "escrow",
+                    "address": "0x030c931e219f93bd381202833f8bb1339b4d64a485f6c9b6124ace07fa9c3b77",
+                    "network": "mainnet"
+                },
+                //mainnet payer
+                {
+                    "chain": "starknet",
+                    "name": "payer",
+                    "address": "0x03ad5e448b0a5769139caed5d29baac43869e5340e667ee738330aadee371c43",
+                    "network": "mainnet"
+                },
+                //testnet escrow
+                {
+                    "chain": "starknet",
+                    "name": "escrow",
+                    "address": "0x01c3a6043c1d2891068b78f00f4a51761bc3161186f3c59fb401e83a8ac4e4ca",
+                    "network": "testnet"
+                },
+                //testnet payer
+                {
+                    "chain": "starknet",
+                    "name": "payer",
+                    "address": "0x51d79c0798176ee34147ad5465069a53eb2e1eecd09be69a8e1f274884f52a7",
+                    "network": "testnet"
+                }
+            ];
+            console.log("fetching payload: \n", JSON.stringify(data))
+            fetch('https://alerting.switchboard.xyz/balances/', {
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("got response:\n",JSON.stringify(data));
+                var table = document.getElementById('results');
+                for (var i = 0; i < data.length; i++) {
+                    var row = `<tr>
+                                    <td>${data[i].chain}</td>
+                                    <td>${data[i].name}</td>
+                                    <td>${data[i].address}</td>
+                                    <td>${data[i].network}</td>
+                                    <td>${data[i].balance}</td>
+                                <td>
+                                        <input type="text" id="fundAmount${i}" placeholder="Enter amount">
+                                        <button onclick="fund('${data[i].address}', document.getElementById('fundAmount${i}').value)">Fund</button>
+                                    </td>
+                                </tr>`;
+                    table.innerHTML += row;
+                }
+            });
+        };
+
+        function fund(address, amount) {
+            var payload = {
+                address: address,
+                amount: amount
+            };
+            fetch('https://alerting.switchboard.xyz/fund', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fund response:\n", JSON.stringify(data));
+                alert('Fund request sent!');
+            });
+        }
+    </script>
+</body>
+</html>
+

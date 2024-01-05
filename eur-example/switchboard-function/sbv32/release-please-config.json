@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "4f8b8244f37b79670d0c4dfd13afef88b4499332",
+  "plugins": ["node-workspace"],
+  "release-type": "node",
+  "packages": {
+    "javascript/aptos.js": {
+      "release-type": "node"
+    },
+    "javascript/cli": {
+      "release-type": "node"
+    },
+    "javascript/common": {
+      "release-type": "node"
+    },
+    "javascript/near.js": {
+      "release-type": "node"
+    },
+    "javascript/oracle": {
+      "release-type": "node"
+    },
+    "javascript/solana.js": {
+      "release-type": "node"
+    },
+    "javascript/sui.js": {
+      "release-type": "node"
+    },
+    "rust/switchboard-common": {
+      "release-type": "rust"
+    },
+    "rust/switchboard-utils": {
+      "release-type": "rust"
+    },
+    "rust/switchboard-solana": {
+      "release-type": "rust"
+    }
+  }
+}

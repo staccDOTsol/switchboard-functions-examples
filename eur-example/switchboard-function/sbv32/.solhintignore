@@ -1,0 +1,10 @@
+*
+
+!chains/evm/switchboard/src/**/*.sol
+!chains/evm/switchboard/test/**/*.sol
+
+!chains/evm/switchboard_push_receiver/src/**/*.sol
+!chains/evm/switchboard_push_receiver/test/**/*.sol
+
+!chains/evm/examples/src/**/*.sol
+!chains/evm/examples/test/**/*.sol

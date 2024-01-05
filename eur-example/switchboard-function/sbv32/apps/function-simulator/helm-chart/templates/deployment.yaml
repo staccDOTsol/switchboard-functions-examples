@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: function-simulator
+  labels:
+    app: function-simulator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: function-simulator
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: function-simulator
+        should_scrape: scrape
+    spec:
+      hostNetwork: true
+      containers:
+        - env:
+            - name: PORT
+              value: {{ .Values.host.port | default 8080 | quote }}
+            - name: RUST_LOG
+              value: {{ .Values.logLevel | default "info" }}
+            - name: SOLANA_MAINNET_RPC_URL
+              value: {{ .Values.solana.mainnetRpc }}
+            - name: SOLANA_DEVNET_RPC_URL
+              value: {{ .Values.solana.devnetRpc }}
+          image: {{ .Values.image | default "switchboardlabs/function-simulator:latest" }}
+          name: function-simulator
+          imagePullPolicy: Always
+          ports:
+            - name: server
+              containerPort: 8080
+          securityContext:
+            privileged: true
+          resources:
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+              sgx.intel.com/epc: 10485760
+              sgx.intel.com/enclave: 1
+              sgx.intel.com/provision: 1
+            requests:
+              cpu: 1250m
+              memory: 1Gi
+              sgx.intel.com/epc: 10485760
+              sgx.intel.com/enclave: 1
+              sgx.intel.com/provision: 1
+          volumeMounts:
+            - name: docker-layers
+              mountPath: /var/lib/docker
+            - name: var-run-aesmd
+              mountPath: /var/run/aesmd
+            - name: dev-sgx-enclave
+              mountPath: /dev/sgx_enclave
+            - name: dev-sgx-provision
+              mountPath: /dev/sgx_provision
+      volumes:
+        - name: docker-layers
+          persistentVolumeClaim:
+            claimName: function-simulator-pvc
+        - name: var-run-aesmd
+          hostPath:
+            path: /var/run/aesmd/
+        - name: dev-sgx-enclave
+          hostPath:
+            path: /dev/sgx_enclave
+        - name: dev-sgx-provision
+          hostPath:
+            path: /dev/sgx_provision

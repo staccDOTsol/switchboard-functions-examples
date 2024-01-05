@@ -1,0 +1,17 @@
+chain: "solana"
+chainId: "devnet"
+image: "switchboardlabs/function-manager:dev-RC_09_24_23_09_29"
+logLevel: info
+rpcUrl: "https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14"
+ipfsUrl: "https://ipfs.infura.io:5001"
+ipfsKey: "2OuGHppwQzKcS9HErVCZ12ngIIr"
+ipfsSecret: "cbfd29f500aee37e0b4139dabdbe396a"
+dockerUser: ""
+dockerKey: ""
+heartbeatInterval: 3600
+dockerPersistentVolumeSize: "50Gi"
+serviceAccountJson: ""
+oracleKeys:
+  - name: idx-1
+    quoteAddress: "HfrGgh4XKZrC1upAfnTAyKGXGxau6498BBuVi9PWtH5N"
+    payerSecret: "[2,212,77,239,44,160,135,1,164,185,235,55,190,160,109,27,186,53,245,155,86,94,120,117,5,52,183,210,24,208,166,231,245,88,156,243,19,34,86,163,135,156,248,170,157,117,96,159,41,233,72,77,22,5,0,8,36,60,214,159,180,241,104,239]"

@@ -1,0 +1,78 @@
+name: EVM
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    # Remove this if we want to always run these tests for every push to main
+    paths:
+    - chains/evm/switchboard/src/**
+    - chains/evm/switchboard_push_receiver/src/**
+    - javascript/evm.js/src/**
+    - javascript/evm.js/test/**
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+    - chains/evm/switchboard/src/**
+    - chains/evm/switchboard_push_receiver/src/**
+    - javascript/evm.js/src/**
+    - javascript/evm.js/test/**
+
+jobs:
+  test-evm-js:
+    name: "@switchboard-xyz/evm.js"
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+        submodules: recursive
+    - name: Setup Workspace
+      uses: ./.github/actions/setup-workspace
+      with:
+        crates: svm-rs
+    - name: Setup Solidity
+      uses: ./.github/actions/setup-solidity
+    - name: Build "@switchboard-xyz/evm.js"
+      working-directory: javascript/evm.js
+      run: turbo build
+    - name: Test "@switchboard-xyz/evm.js"
+      working-directory: javascript/evm.js
+      run: pnpm test
+  switchboard-contract:
+    name: Switchboard Contract
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+        submodules: recursive
+    - name: Setup Workspace
+      uses: ./.github/actions/setup-workspace
+      with:
+        crates: svm-rs
+    - name: Setup Solidity
+      uses: ./.github/actions/setup-solidity
+    - name: Build Switchboard Contract
+      working-directory: chains/evm/switchboard
+      run: pnpm build:all
+  switchboard-push-receiver-contract:
+    name: Switchboard Push Receiver Contract
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+        submodules: recursive
+    - name: Setup Workspace
+      uses: ./.github/actions/setup-workspace
+      with:
+        crates: svm-rs
+    - name: Setup Solidity
+      uses: ./.github/actions/setup-solidity
+    - name: Build Switchboard Contract
+      working-directory: chains/evm/switchboard_push_receiver
+      run: pnpm build:all

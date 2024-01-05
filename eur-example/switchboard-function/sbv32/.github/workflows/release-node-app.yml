@@ -1,0 +1,118 @@
+name: Release Node App
+
+on:
+  workflow_dispatch:
+    inputs:
+      optional-tag:
+        description: an optional-tag to add to the image (Ex. beta)
+        required: false
+      skipPublish:
+        type: boolean
+        description: skip publishing and just build the image
+        required: false
+        default: false
+
+jobs:
+  release_oracle:
+    name: "Push Oracle to Dockerhub"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Checkout as many commits as needed for the diff
+          fetch-depth: 2
+
+      - id: get-git-version
+        uses: ./.github/actions/get-git-version
+        with:
+          optional-tag: ${{ github.event.inputs.optional-tag }}
+
+      - name: Setup Workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Build App
+        run: turbo run build --filter=nodejs-oracle
+
+      - name: Build Beta App
+        if: ${{ github.event.inputs.optional-tag == 'beta' }}
+        working-directory: apps/nodejs-oracle
+        run: node ./esbuild.js "--dev"
+
+      - name: Docker Build
+        id: docker
+        uses: ./.github/actions/build-docker-image
+        with:
+          image: switchboardlabs/node
+          dockerfile: ./apps/nodejs-oracle/Dockerfile
+          build-context: ./apps/nodejs-oracle
+          tag: ${{ steps.get-git-version.outputs.git-version }}
+          container-registry-username: ${{ secrets.DOCKERHUB_CI_USERNAME }}
+          container-registry-password: ${{ secrets.DOCKERHUB_CI_TOKEN }}
+          push: ${{ github.event.inputs.skipPublish == 'false' }}
+
+  release_crank:
+    name: "Push Crank to Dockerhub"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Checkout as many commits as needed for the diff
+          fetch-depth: 2
+
+      - id: get-git-version
+        uses: ./.github/actions/get-git-version
+        with:
+          optional-tag: ${{ github.event.inputs.optional-tag }}
+
+      - name: Setup Workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Build App
+        run: turbo run build --filter=nodejs-oracle
+
+      - name: Docker Build
+        id: docker
+        uses: ./.github/actions/build-docker-image
+        with:
+          image: switchboardlabs/crank-turn
+          dockerfile: ./apps/nodejs-oracle/Dockerfile.crank
+          build-context: ./apps/nodejs-oracle
+          tag: ${{ steps.get-git-version.outputs.git-version }}
+          container-registry-username: ${{ secrets.DOCKERHUB_CI_USERNAME }}
+          container-registry-password: ${{ secrets.DOCKERHUB_CI_TOKEN }}
+          push: ${{ github.event.inputs.skipPublish == 'false' }}
+
+  release_task_runner_api:
+    name: "Push TaskRunner API to Dockerhub"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Checkout as many commits as needed for the diff
+          fetch-depth: 2
+
+      - id: get-git-version
+        uses: ./.github/actions/get-git-version
+        with:
+          optional-tag: ${{ github.event.inputs.optional-tag }}
+
+      - name: Setup Workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Build App
+        run: turbo run build --filter=task-runner-api
+
+      - name: Docker Build
+        id: docker
+        uses: ./.github/actions/build-docker-image
+        with:
+          image: switchboardlabs/task-runner
+          dockerfile: ./apps/task-runner-api/Dockerfile
+          build-context: ./apps/task-runner-api
+          tag: ${{ steps.get-git-version.outputs.git-version }}
+          container-registry-username: ${{ secrets.DOCKERHUB_CI_USERNAME }}
+          container-registry-password: ${{ secrets.DOCKERHUB_CI_TOKEN }}
+          push: ${{ github.event.inputs.skipPublish == 'false' }}

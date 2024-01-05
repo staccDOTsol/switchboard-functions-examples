@@ -1,0 +1,44 @@
+[package]
+name = "qvn"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+arrayref = "0.3.6"
+ascii = "1.1.0"
+async-trait = "0.1.68"
+base58 = "0.2.0"
+base64 = "0.21.0"
+bs58 = "0.4.0"
+bytemuck = "1.13.1"
+bytes = "1.4.0"
+envy = "0.4.2"
+femme = "2.2.1"
+futures = "0.3"
+futures-core = "0.3"
+futures-util = "0.3"
+getrandom = "0.2.8"
+hex = "0.4.3"
+ipfs-api = { version = "0.17.0", features = ["with-hyper-rustls"] }
+ipfs-api-backend-hyper = "0.6"
+kv-log-macro = "1.0"
+lazy_static = "1.4.0"
+libc = { version = "0.2.141", default-features = false }
+log = { version = "0.4", features = ["kv_unstable", "kv_unstable_std"] }
+nom = "7.1.3"
+num-derive = "0.3.3"
+num-traits = "0.2.15"
+reqwest = { version = "0.11.14", features = ["json", "blocking"] }
+secret-vault = { version = "=1.8.0", features = ["gcp-secretmanager"] }
+serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
+sgx-dcap-quoteverify-rs = { version = "0.2.0", path = "../../rust/sgx-dcap-quoteverify-rs" }
+sgx-dcap-quoteverify-sys = { version = "0.2.0", path = "../../rust/sgx-dcap-quoteverify-sys" }
+sgx-quote = "0.1.0"
+sgx_types = "1.1.2"
+sha2 = "0.10.6"
+switchboard-common = { version = "=0.10.5", features = [
+    "client",
+] }
+tokio = { version = "1.34.0", features = ["full"] }
+tracing-attributes = "0.1.23"

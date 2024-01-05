@@ -1,0 +1,14 @@
+**/node_modules/*
+node_modules/
+**/dist/*
+**/lib/*
+.github
+**/README.md
+**/skiptests/
+**/compile-protos.js
+javascript/common/src/protos
+**/esbuild.js
+devops/**
+chains/evm/scripts/libraries
+
+chains/solana/examples/functions/05_raffle_program/**

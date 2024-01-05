@@ -1,0 +1,49 @@
+{
+  "files": [
+    "src/index.ts"
+  ],
+  "include": [
+    "src/**/*",
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "scripts"
+  ],
+  "compilerOptions": {
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "declarationMap": true,
+    "importHelpers": true,
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "target": "es2019",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "Node",
+  },
+  "references": [
+    {
+      "path": "../aptos.js"
+    },
+    {
+      "path": "../common"
+    },
+    {
+      "path": "../evm.js"
+    },
+    {
+      "path": "../near.js"
+    },
+    {
+      "path": "../oracle"
+    },
+    {
+      "path": "../solana.js"
+    }
+  ]
+}

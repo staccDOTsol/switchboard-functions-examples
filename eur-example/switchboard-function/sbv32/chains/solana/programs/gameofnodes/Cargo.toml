@@ -1,0 +1,27 @@
+[package]
+name = "gameofnodes"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "gameofnodes"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[profile.release]
+overflow-checks = true
+
+[dependencies]
+anchor-lang = "0.24.2"
+switchboard_v2 =  { version = "0.1.0", path="../switchboard_v2", features = ["cpi", "no-entrypoint"]}
+anchor-spl = { version = "0.24.2", features = ["governance"] }
+spl-governance-addin-api = "0.1.2"
+solana-program = "1.9.28"
+spl-governance = { version = "=2.2.4", features = ["no-entrypoint"] }

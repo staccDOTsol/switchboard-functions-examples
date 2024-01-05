@@ -1,0 +1,35 @@
+{
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "ES2019",
+      "alwaysStrict": true,
+      "strictNullChecks": false,
+      "strictFunctionTypes": true,
+      "noImplicitReturns": true,
+      "strictPropertyInitialization": true,
+      "noImplicitThis": true,
+      "resolveJsonModule": true,
+      "declarationMap": true,
+    }
+  },
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "declaration": true
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

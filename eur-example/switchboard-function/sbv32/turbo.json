@@ -1,0 +1,52 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env.*local",
+    "protos/job_schemas.proto",
+    "pnpm-lock.yaml"
+  ],
+  "pipeline": {
+    "lint": { "inputs": ["src/**/*.tsx", "src/**/*.ts"] },
+    "fix": {
+      "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.rs",
+        "src/**/*.sol",
+        "esbuild.js",
+        "compile-protos.js"
+      ],
+      "outputs": [
+        "dist/**",
+        "lib/**",
+        "*.js",
+        "*.cjs",
+        "*.d.ts",
+        "alerts/*.js",
+        "alerts/*.d.ts",
+        "generated/**/*.js",
+        "generated/**/*.d.ts"
+      ]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "test/**/*.ts",
+        "tests/**/*.ts",
+        "tests/**/*.move",
+        "test/**/*.sol"
+      ]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@switchboard-xyz/mercurial-stable-swap-n-pool",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@project-serum/borsh": "^0.2.2",
+    "@solana/spl-token": "=0.1.8",
+    "buffer-layout": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.0",
+    "@types/bs58": "^4.0.1",
+    "@types/mocha": "^8.2.2",
+    "bs58": "^4.0.1",
+    "dotenv": "~10.0.0",
+    "mocha": "~9.0.3",
+    "start-server-and-test": "^1.12.3",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "4.7.3"
+  },
+  "peerDependencies": {
+    "@solana/spl-token": "<0.2.0",
+    "@solana/web3.js": ">=1.29.0",
+    "bn.js": ">=5.2.0"
+  },
+  "readme": "# Mercurial Stable Swap Typescript Library\n\nThis is our preliminary release of our [Mercurial Finance](https://mercurial.finance) Stable Swap Typescript Library. If you have any questions, please ask in our [Discord](https://discord.gg/WwFwsVtvpH).\n\n## Addresses\n\n* Stable Swap Program Address: `MERLuDFBMmsHnsBPZw2sDQZHvXFMwp8EdjudcU2HKky`\n* PAI 3-Pool (USDC-USDT-PAI): `SWABtvDnJwWwAb9CbSA3nv7nTnrtYjrACAVtuP3gyBB`\n* UST 3-Pool (USDC-USDT-UST): `USD6kaowtDjwRkN5gAjw1PDMQvc9xRp8xW9GK8Z5HBA`\n* pSOL 2-Pool (pSOL-SOL): `SoLw5ovBPNfodtAbxqEKHLGppyrdB4aZthdGwpfpQgi`\n* wUSD 4-Pool (USDC-wUSDC-wUSDT-wDAI): `USD42Jvem43aBSLqT83GZmvRbzAjpKBonQYBQhni7Cv`\n* stSOL 2-Pool (stSOL-SOL): `LiDoU8ymvYptqxenJ4YpcURBchn4ef63tcbdznBCKJh`\n* mSOL 2-Pool (mSOL-SOL): `MAR1zHjHaQcniE2gXsDptkyKUnNfMEsLBVcfP7vLyv7`\n* wbBUSD 4Pool (wbBUSD-wbUSDC-wbUSDT-USDC): `BUSDXyZeFXrcEkETHfgGh5wfqavmfC8ZJ8BbRP33ctaG`\n\n## Cache\n\nThe `generate-cache` command is used to generate token mint accounts cache for the library in order to save on RPC calls, it will generate a mapping of token accounts to token mints under `./src/token-mints.json`."
+}

@@ -1,0 +1,4 @@
+forge-gas-snapshot/=lib/forge-gas-snapshot/src/
+forge-std/=lib/forge-std/src/
+solidity-stringutils/=lib/solidity-stringutils/src/
+hardhat/=node_modules/hardhat/

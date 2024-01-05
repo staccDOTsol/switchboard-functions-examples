@@ -1,0 +1,57 @@
+name: release-please
+
+# on:
+#   push:
+#     branches:
+#       - main
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          command: manifest
+          release-type: node
+          token: ${{secrets.GITHUB_TOKEN}}
+          default-branch: main
+          monorepo-tags: true
+
+      # The logic below handles the npm publication:
+      - name: Checkout Repository
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2.0.1
+        if: ${{ steps.release.outputs.releases_created }}
+        with:
+          version: 8.6
+
+      - name: Setup Node.js environment
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Build Packages
+        if: ${{ steps.release.outputs.releases_created }}
+        run: |
+          pnpm install
+          pnpm build
+
+      # Release Please has already incremented versions and published tags, so we just
+      # need to publish all unpublished versions to NPM here
+      # See: https://github.com/lerna/lerna/tree/main/commands/publish#bump-from-package
+      - name: Publish to NPM
+        if: ${{ steps.release.outputs.releases_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: pnpm -r publish

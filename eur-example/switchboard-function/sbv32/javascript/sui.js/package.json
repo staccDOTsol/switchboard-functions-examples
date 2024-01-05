@@ -1,0 +1,51 @@
+{
+  "name": "@switchboard-xyz/sui.js",
+  "version": "2.3.14",
+  "description": "API wrapper for intergating with the Switchboardv2 program on sui",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "sbv2-sui.ts",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "pnpm exec shx rm -rf lib || true; pnpm exec tsc -p tsconfig.cjs.json && pnpm exec tsc",
+    "clean": "pnpm exec rimraf node_modules lib .turbo",
+    "fix": "pnpm exec eslint --fix src/**/*.ts",
+    "lint": "pnpm exec eslint src/**/*.ts",
+    "prepack": "pnpm run lint && pnpm run build",
+    "watch": "pnpm exec tsc -p tsconfig.cjs.json --watch"
+  },
+  "dependencies": {
+    "@mysten/sui.js": "0.32.2",
+    "@switchboard-xyz/common": "workspace:^2.3.3",
+    "chalk": "^5.0.1",
+    "js-sha3": "^0.8.0",
+    "node-fetch": "3.3.1"
+  },
+  "devDependencies": {
+    "@switchboard-xyz/eslint-config": "workspace:latest",
+    "@types/big.js": "^6.1.6",
+    "@types/bn.js": "^5.1.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node-fetch": "^2.6.2",
+    "@types/yargs": "^17.0.11",
+    "mocha": "^10.1.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "yaml": "^2.1.1",
+    "yargs": "^17.5.1"
+  }
+}

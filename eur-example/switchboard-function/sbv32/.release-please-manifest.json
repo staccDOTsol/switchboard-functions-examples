@@ -1,0 +1,12 @@
+{
+  "javascript/aptos.js": "2.6.10",
+  "javascript/cli": "2.4.0",
+  "javascript/common": "2.2.4",
+  "javascript/near.js": "2.2.4",
+  "javascript/oracle": "2.1.13",
+  "javascript/solana.js": "2.3.3",
+  "javascript/sui.js": "2.3.13",
+  "rust/switchboard-common": "0.8.5",
+  "rust/switchboard-utils": "0.8.0",
+  "rust/switchboard-solana": "0.8.18"
+}

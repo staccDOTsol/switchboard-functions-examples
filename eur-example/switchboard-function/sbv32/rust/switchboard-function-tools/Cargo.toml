@@ -1,0 +1,39 @@
+[package]
+name = "sb-func-tools"
+version = "0.1.1"
+edition = "2021"
+description = "A Rust CLI to help manage and debug your Switchboard Functions."
+readme = "README.md"
+keywords = ["switchboard", "oracle", "solana", "solidity"]
+homepage = "https://switchboard.xyz"
+repository = "https://github.com/switchboard-xyz/sbv2-core/tree/main/rust/switchboard-common"
+license = "MIT"
+
+[[bin]]
+name = "sb-func-tools"
+test = false
+bench = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+switchboard-common = { version = "0.11.0", path = "../switchboard-common", features = [
+  "client",
+] }
+clap = { version = "4", features = ["derive"] }
+serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
+bollard = "0.14.0"
+futures-util = "0.3.28"
+tokio = { version = "1", features = ["full"] }
+tokio-graceful-shutdown = "0.11.1"
+miette = { version = "5.9.0", features = ["fancy"] }
+env_logger = "0.9"
+log = "0.4"
+hex = { version = "0.4.3", features = ["serde"] }
+sha256 = "1.1.4"
+regex = "1.9.1"
+tokio-tar = "0.3.0"
+tokio-util = { version = "0.7.8", features = ["io"] }
+
+[dev-dependencies]
+assert_cmd = "2"

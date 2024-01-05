@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "declaration": true,
+    "paths": {
+      "@switchboard-xyz/common": ["../../../javascript/common"],
+      "@switchboard-xyz/evm.js": ["../../../javascript/evm.js"]
+    }
+  },
+  "references": [
+    {
+      "path": "../../../javascript/common"
+    },
+    {
+      "path": "../../../javascript/evm.js"
+    }
+  ],
+  "include": ["scripts", "test", "typechain-types", "tasks"],
+  "files": ["hardhat.config.ts"]
+}

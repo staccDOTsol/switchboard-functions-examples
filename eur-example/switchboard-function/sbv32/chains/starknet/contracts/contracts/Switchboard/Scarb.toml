@@ -1,0 +1,27 @@
+[package]
+name = "switchboard_contract"
+version.workspace = true
+authors.workspace = true
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[cairo]
+sierra-replace-ids = true
+
+[dependencies]
+openzeppelin.workspace = true
+sb_attestation_queue = { path = "../../packages/AttestationQueueLib" }
+sb_function = { path = "../../packages/FunctionLib" }
+sb_permissions = { path = "../../packages/PermissionsLib" }
+sb_request = { path = "../../packages/RequestLib" }
+sb_routine = { path = "../../packages/RoutineLib" }
+sb_util = { path = "../../packages/Util" }
+sb_verifier = { path = "../../packages/VerifierLib" }
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

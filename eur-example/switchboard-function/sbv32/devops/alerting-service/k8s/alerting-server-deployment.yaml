@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: alerting-server
+    #should_scrape: scrape
+  name: alerting-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerting-server-deployment
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: alerting-server-deployment
+        #should_scrape: scrape
+    spec:
+      containers:
+      - env:
+        - 
+          name: DB_ENDPOINT
+          value: "redacted"
+        image: docker.io/switchboardlabs/alerting-server
+        name: alerting-server
+        ports:
+        - name: web
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 3000m
+            ephemeral-storage: 1Gi
+            memory: 4Gi
+          requests:
+            cpu: 2000m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+
+
+
+

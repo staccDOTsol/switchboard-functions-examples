@@ -1,0 +1,78 @@
+# syntax=docker/dockerfile:1.4
+FROM switchboardlabs/gramine
+
+LABEL "org.opencontainers.image.vendor"="Switchboard Labs"
+LABEL "org.opencontainers.image.title"="Switchboard Gramine build image"
+LABEL "org.opencontainers.image.source"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.url"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.description"="Image used to compile Gramine applications"
+
+
+ENV SGX_SDK_VERSION="2.21.100.1"
+ENV SGX_SDK_VERSION_SHORT="2.21"
+
+ENV SGX_DCAP_VERSION="1.18.100.1-focal1"
+
+###############################################################
+### Linux Setup
+###############################################################
+RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,id=debconf,target=/var/cache/debconf,sharing=locked \
+    set -exu && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
+    apt -y --no-install-recommends install \
+    clang \
+    clang-10 \
+    cmake \
+    cracklib-runtime \
+    curl \
+    dbus \
+    debhelper \
+    gcc \
+    gdb \
+    gnupg-agent \
+    libboost-dev \
+    libboost-system-dev \
+    libboost-thread-dev \
+    libcurl4-openssl-dev \
+    libprotobuf-c-dev \
+    libprotobuf-dev \
+    libprotobuf17 \
+    libsgx-dcap-quote-verify-dev=${SGX_DCAP_VERSION} \
+    libsgx-dcap-quote-verify=${SGX_DCAP_VERSION} \
+    libssl-dev \
+    libsystemd0 \
+    make \
+    net-tools \
+    nodejs \
+    openssl \
+    protobuf-c-compiler \
+    protobuf-compiler
+
+###############################################################
+### Bun SETUP
+###############################################################
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+###############################################################
+### Rust SETUP
+###############################################################
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}" 
+RUN cargo install cargo-strip 
+
+###############################################################
+### Intel SGX SDK Setup
+###############################################################
+WORKDIR /opt/intel
+RUN wget -q https://download.01.org/intel-sgx/sgx-linux/${SGX_SDK_VERSION_SHORT}/distro/ubuntu20.04-server/sgx_linux_x64_sdk_${SGX_SDK_VERSION}.bin && \
+    chmod +x sgx_linux_x64_sdk_${SGX_SDK_VERSION}.bin && \
+    ./sgx_linux_x64_sdk_${SGX_SDK_VERSION}.bin --prefix=/opt/intel && \
+    echo "source /opt/intel/sgxsdk/environment" >> ~/.bashrc
+
+WORKDIR /app
+
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/restart_aesm.sh ; exec /bin/bash"]

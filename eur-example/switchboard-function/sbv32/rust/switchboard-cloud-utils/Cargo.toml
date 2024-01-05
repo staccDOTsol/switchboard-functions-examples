@@ -1,0 +1,11 @@
+[package]
+name = "switchboard-cloud-utils"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = "0.3"
+secret-vault = { version = "=1.8", features = ["serde", "gcp-secretmanager"] }
+log = { version = "0.4", features = ["kv_unstable", "kv_unstable_std"] }

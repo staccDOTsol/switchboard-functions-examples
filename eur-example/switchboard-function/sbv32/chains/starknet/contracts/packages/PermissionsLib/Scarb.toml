@@ -1,0 +1,13 @@
+[package]
+name = "sb_permissions"
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+sb_util = { path = "../Util" }
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

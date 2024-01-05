@@ -1,0 +1,87 @@
+/* eslint node/no-unpublished-require: 0 */
+/* eslint no-unused-vars: 0 */
+
+import * as utils from "@switchboard-xyz/common/esm-utils";
+import { execSync } from "child_process";
+import { build } from "esbuild";
+import fs from "fs";
+import fsPromises from "fs/promises";
+import path from "path";
+import shell from "shelljs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const buildFiles = ["tsconfig.tsbuildinfo"];
+
+const outDir = path.join(__dirname, "lib");
+
+async function main() {
+  await Promise.all([
+    fsPromises.rm(outDir, { recursive: true, force: true }),
+    fsPromises.rm(path.join(__dirname, "lib-cjs"), {
+      recursive: true,
+      force: true,
+    }),
+    buildFiles.map((f) => fsPromises.rm(f, { force: true })),
+  ]);
+
+  fs.mkdirSync(outDir, { recursive: true });
+
+  execSync(`pnpm exec tsc`, { encoding: "utf-8" });
+
+  execSync(`pnpm exec tsc -p tsconfig.cjs.json`, {
+    encoding: "utf-8",
+  });
+
+  await utils
+    .moveCjsFilesAsync("lib-cjs", "lib")
+    .then(() => fsPromises.rm("lib-cjs", { recursive: true, force: true }));
+
+  console.log(`Generating entrypoints ...`);
+  utils.generateEntrypoints(__dirname, "lib", {
+    index: "index",
+    runner: "TaskRunner",
+    simulator: "TaskSimulator",
+    utils: "utils/index",
+    clients: "clients/index",
+    tasks: "tasks/index",
+    ctx: "ctx/index",
+    errors: "errors",
+  });
+
+  const commonOptions = {
+    bundle: true,
+    minify: true,
+    treeShaking: true,
+    platform: "node",
+    sourcemap: true,
+    sourcesContent: false,
+    target: "node18",
+    plugins: [],
+    legalComments: "none",
+  };
+  const workerFiles = ["taskRunner"];
+  for (const worker of workerFiles) {
+    await Promise.all([
+      build({
+        ...commonOptions,
+        format: "cjs",
+        entryPoints: [`./src/ctx/worker/${worker}.worker.ts`],
+        outfile: `lib/ctx/worker/${worker}.worker.cjs`,
+      }),
+      build({
+        ...commonOptions,
+        format: "esm",
+        entryPoints: [`./src/ctx/worker/${worker}.worker.ts`],
+        outfile: `lib/ctx/worker/${worker}.worker.js`,
+      }),
+    ]);
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  throw error;
+});

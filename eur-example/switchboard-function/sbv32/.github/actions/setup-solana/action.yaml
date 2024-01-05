@@ -1,0 +1,78 @@
+name: "Setup Solana"
+
+description: "Install Solana and Anchor"
+
+inputs:
+  solana-version:
+    description: "the Solana version to install"
+    required: false
+    default: "v1.17.6"
+  anchor-version:
+    description: "the Anchor version to install"
+    required: false
+    default: "0.29.0"
+  payer-secret:
+    description: "the payer secret to setup for transactions"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+  # Install Solana Toolchain
+  - name: Cache Solana Install
+    id: cache-solana-install
+    uses: actions/cache@v3
+    with:
+      path: |
+        ~/.cache/solana/
+        ~/.local/share/solana/
+      # TODO: Should update this cache key so stable doesnt mask
+      key: ${{ runner.os }}-Solana-${{ inputs.solana-version  }}
+  - name: Install Solana
+    shell: bash
+    if: steps.cache-solana-install.outputs.cache-hit != 'true'
+    run: sh -c "$(curl -sSfL https://release.solana.com/${{ inputs.solana-version}}/install)"
+  - name: Add Solana bin to Path
+    shell: bash
+    run: |
+      echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+  - name: Verify Solana install
+    shell: bash
+    run: |
+      solana --version
+
+  # Install Anchor
+  - name: Setup Anchor Cache
+    uses: actions/cache@v3
+    id: cache-anchor-cli
+    if: inputs.anchor-version != ''
+    with:
+      path: |
+        ~/.cargo/bin/
+        ~/.cargo/registry/index/
+        ~/.cargo/registry/cache/
+        ~/.cargo/git/db/
+        ./target/
+      key: anchor-cli-${{ runner.os }}-${{ inputs.anchor-version }}
+  - name: Install Anchor
+    shell: bash
+    if: inputs.anchor-version != '' && steps.cache-anchor-cli.outputs.cache-hit != 'true'
+    run: cargo install --git https://github.com/coral-xyz/anchor --tag "v${{inputs.anchor-version }}" anchor-cli --locked
+  - name: Verify Anchor install
+    shell: bash
+    if: inputs.anchor-version != ''
+    run: anchor --version
+
+
+  # Setup Secret
+  - name: Setup Payer Secret
+    shell: bash
+    if: inputs.payer-secret != ''
+    run: echo "${{ inputs.payer-secret }}" > ~/.config/solana/id.json
+  # Setup New Keypair
+  - name: Find or Create Keypair
+    shell: bash
+    if: inputs.payer-secret == ''
+    run: |
+      find ~/.config/solana/id.json || solana-keygen new -s --no-bip39-passphrase
+      echo "DEFAULT_SOLANA_PUBLIC_KEY=$(solana-keygen pubkey ~/.config/solana/id.json)" >> $GITHUB_ENV

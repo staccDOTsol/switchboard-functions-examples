@@ -1,0 +1,376 @@
+sourceUrl = "https://github.com/switchboard-xyz/sbv3.git"
+coreSdkUrl = "https://github.com/switchboard-xyz/switchboard.git"
+solanaSdkUrl = "https://github.com/switchboard-xyz/solana-sdk.git"
+evmSdkUrl = "https://github.com/switchboard-xyz/evm-sdk.git"
+starknetSdkUrl = "https://github.com/switchboard-xyz/starknet-sdk.git"
+secretsServerUrl = "https://github.com/switchboard-xyz/secrets-server.git"
+
+# core-sdk -> monorepo
+core.workflow(
+    name = "core-sdk-pull",
+    origin = git.origin(
+        url = coreSdkUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sourceUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-core-sdk-pull",
+        title = "chore: pull core-sdk changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the core-sdk repo.",
+        integrates = [],
+    ),\
+    origin_files = glob([
+      "javascript/common/**",
+      "javascript/oracle/**",
+      "javascript/eslint/**",
+      "javascript/cli/**",
+      "cli/**",
+      "rust/switchboard-common/**",
+      "rust/switchboard-utils/**"
+    ]),
+    destination_files = glob([
+      "javascript/common/**",
+      "javascript/oracle/**",
+      "javascript/eslint/**",
+      "javascript/cli/**",
+      "rust/switchboard-common/**",
+      "rust/switchboard-utils/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.move(
+          "cli",
+          "javascript/cli"
+        ),
+    ],
+)
+
+# monorepo -> core-sdk
+core.workflow(
+    name = "core-sdk-push",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = coreSdkUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-core-sdk-push",
+        title = "chore: pull monorepo changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the sbv3 monorepo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/common/**",
+      "javascript/oracle/**",
+      "javascript/eslint/**",
+      "javascript/cli/**",
+      "rust/switchboard-common/**",
+      "rust/switchboard-utils/**"
+    ], exclude = ["**/tsconfig.json"]),
+    destination_files = glob([
+      "javascript/common/**",
+      "javascript/oracle/**",
+      "javascript/eslint/**",
+      "javascript/cli/**",
+      "cli/**",
+      "rust/switchboard-common/**",
+      "rust/switchboard-utils/**"
+    ], exclude = ["**/tsconfig.json"]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.move(
+          "javascript/cli",
+          "cli"
+        ),
+        core.replace(
+          before = "workspace:",
+          after = "",
+          paths = glob(["**/package.json"])
+        ),
+    ],
+)
+
+# solana-sdk -> monorepo
+core.workflow(
+    name = "solana-sdk-pull",
+    origin = git.origin(
+        url = solanaSdkUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sourceUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-solana-sdk-pull",
+        title = "chore: pull solana-sdk changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the solana-sdk repo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/solana.js/**",
+      "javascript/sbv2-lite/**",
+      "rust/switchboard-solana/**",
+      "rust/switchboard-solana-macros/**",
+      "rust/switchboard-v2/**"
+    ]),
+    destination_files = glob([
+      "javascript/solana.js/**",
+      "javascript/sbv2-lite/**",
+      "rust/switchboard-solana/**",
+      "rust/switchboard-solana-macros/**",
+      "rust/switchboard-v2/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [],
+)
+
+# monorepo -> solana-sdk
+core.workflow(
+    name = "solana-sdk-push",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = solanaSdkUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-solana-sdk-push",
+        title = "chore: pull monorepo changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the sbv3 monorepo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/solana.js/**",
+      "javascript/sbv2-lite/**",
+      "rust/switchboard-solana/**",
+      "rust/switchboard-solana-macros/**",
+      "rust/switchboard-v2/**",
+      "chains/solana/examples/**"
+    ]),
+    destination_files = glob([
+      "javascript/solana.js/**",
+      "javascript/sbv2-lite/**",
+      "rust/switchboard-solana/**",
+      "rust/switchboard-solana-macros/**",
+      "rust/switchboard-v2/**",
+      "examples/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.replace(
+          before = "workspace:*",
+          after = "latest",
+          paths = glob(["**/package.json"])
+        ),
+        core.replace(
+          before = "workspace:latest",
+          after = "latest",
+          paths = glob(["**/package.json"])
+        ),
+        core.replace(
+          before = "workspace:",
+          after = "",
+          paths = glob(["**/package.json"])
+        ),
+        core.replace(
+          before = ", path = \"../switchboard-common\"",
+          after = "",
+          paths = glob(["**/Cargo.toml"])
+        ),
+        core.replace(
+          before = "https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14",
+          after = "https://api.devnet.solana.com",
+          paths = glob(["**/*"])
+        ),
+        core.replace(
+          before = "https://switchboard.rpcpool.com/ec20ad2831092cfcef66d677539a",
+          after = "https://api.mainnet-beta.solana.com",
+          paths = glob(["**/*"])
+        ),
+        core.replace(
+          before = '"../../../../../rust/switchboard-solana"',
+          after = '"../../../rust/switchboard-solana"',
+          paths = glob(["**/Cargo.toml"])
+        ),
+        core.replace(
+          before = '"../../../../../../rust/switchboard-solana"',
+          after = '"../../../../rust/switchboard-solana"',
+          paths = glob(["**/Cargo.toml"])
+        ),
+        core.move(
+          "chains/solana/examples",
+          "examples"
+        ),
+    ],
+)
+
+# evm-sdk -> monorepo
+core.workflow(
+    name = "evm-sdk-pull",
+    origin = git.origin(
+        url = evmSdkUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sourceUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-evm-sdk-pull",
+        title = "chore: pull evm-sdk changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the evm-sdk repo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/evm.js/**",
+      "rust/switchboard-evm/**"
+    ]),
+    destination_files = glob([
+      "javascript/evm.js/**",
+      "rust/switchboard-evm/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [],
+)
+
+# monorepo -> evm-sdk
+core.workflow(
+    name = "evm-sdk-push",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = evmSdkUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-evm-sdk-push",
+        title = "chore: pull monorepo changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the sbv3 monorepo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/evm.js/**",
+      "rust/switchboard-evm/**",
+      "chains/evm/examples/**"
+    ], exclude = ["javascript/evm.js/.gitignore"]),
+    destination_files = glob([
+      "javascript/evm.js/**",
+      "rust/switchboard-evm/**",
+      "examples/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.move(
+          "chains/evm/examples",
+          "examples"
+        ),
+        core.replace(
+          before = "workspace:*",
+          after = "latest",
+          paths = glob(["**/package.json"])
+        ),
+        core.replace(
+          before = "workspace:",
+          after = "",
+          paths = glob(["**/package.json"])
+        )
+    ],
+)
+
+# starknet-sdk -> monorepo
+core.workflow(
+    name = "starknet-sdk-pull",
+    origin = git.origin(
+        url = starknetSdkUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = sourceUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-starknet-sdk-pull",
+        title = "chore: pull starknet-sdk changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the starknet-sdk repo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/starknet.js/**",
+      "rust/switchboard-starknet/**"
+    ]),
+    destination_files = glob([
+      "javascript/starknet.js/**",
+      "rust/switchboard-starknet/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [],
+)
+
+# monorepo -> starknet-sdk
+core.workflow(
+    name = "starknet-sdk-push",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = starknetSdkUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-starknet-sdk-push",
+        title = "chore: pull monorepo changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the sbv3 monorepo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+      "javascript/starknet.js/**",
+      "rust/switchboard-starknet/**",
+      "chains/starknet/examples/**"
+    ], exclude = ["javascript/starknet.js/.gitignore"]),
+    destination_files = glob([
+      "javascript/starknet.js/**",
+      "rust/switchboard-starknet/**",
+      "examples/**"
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+        core.move(
+          "chains/estarknetvm/examples",
+          "examples"
+        ),
+        core.replace(
+          before = "workspace:*",
+          after = "latest",
+          paths = glob(["**/package.json"])
+        ),
+        core.replace(
+          before = "workspace:",
+          after = "",
+          paths = glob(["**/package.json"])
+        )
+    ],
+)
+
+# monorepo -> secrets-server
+core.workflow(
+    name = "secrets-server-push",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.github_pr_destination(
+        url = secretsServerUrl,
+        destination_ref = "main",
+        pr_branch = "copybara-secrets-server-push",
+        title = "chore: pull monorepo changes",
+        body = "🤖 **copybara CI**\n\nThis PR includes changes from the sbv3 monorepo.",
+        integrates = [],
+    ),
+    origin_files = glob([
+        "apps/secrets-server/package.json",
+
+    ]),
+    destination_files = glob([
+        "apps/secrets-server/package.json",
+    ]),
+    authoring = authoring.pass_thru("Copybara <copybara@example.com>"),
+    transformations = [
+      # TODO: transform as needed.
+    ],
+)

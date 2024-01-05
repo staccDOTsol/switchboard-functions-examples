@@ -1,0 +1,58 @@
+{
+  "name": "alerting-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "build": "node ./esbuild.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@isaacs/ttlcache": "^1.4.0",
+    "@mysten/sui.js": "0.32.2",
+    "@solana/web3.js": "^1.78.3",
+    "@switchboard-xyz/aptos.js": "workspace:^",
+    "@switchboard-xyz/common": "workspace:^",
+    "@switchboard-xyz/evm.js": "workspace:^",
+    "@switchboard-xyz/near.js": "workspace:^",
+    "@switchboard-xyz/node": "workspace:^",
+    "@switchboard-xyz/solana.js": "workspace:^",
+    "@switchboard-xyz/sui.js": "workspace:^",
+    "aptos": "^1.11.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^5.7.2",
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "lru-cache": "^7.10.1",
+    "near-api-js": "^2.0.4"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.5.0",
+    "@switchboard-xyz/eslint-config": "latest",
+    "@types/chai": "^4.3.4",
+    "@types/expect": "^24.3.0",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.0",
+    "@types/lodash": "^4.14.190",
+    "@types/lru-cache": "^5.1.1",
+    "@types/node": "^18",
+    "@types/set-interval-async": "^1.0.0",
+    "esbuild": "^0.17.16",
+    "eslint": "^8.36.0",
+    "gts": "^3.1.1",
+    "jest": "^29.5.0",
+    "shelljs": "^0.8.5",
+    "shx": "^0.3.4",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=18.0.0"
+  }
+}

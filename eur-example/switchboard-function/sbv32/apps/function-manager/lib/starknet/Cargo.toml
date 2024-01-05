@@ -1,0 +1,61 @@
+[package]
+name = "starknet"
+version = "0.3.0"
+edition = "2021"
+
+[lib]
+name = "starknet"
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+
+[dependencies]
+# switchboard-cloud-utils = { version = "*", path = "../../../../rust/switchboard-cloud-utils" }
+switchboard-common = { path = "../../../../rust/switchboard-common", features = [
+    "client",
+] }
+switchboard-container-utils = { version = "*", path = "../../../../rust/switchboard-container-utils" }
+# switchboard-common = { version = "0.11.0", path = "../../../../rust/switchboard-common", features = [
+#    "client",
+# ] }
+
+arrayref = "0.3.6"
+ascii = "1.1.0"
+base58 = "0.2.0"
+base64 = "0.21.0"
+bincode = "1.3.3"
+bs58 = "0.4.0"
+bytemuck = "1.13.1"
+chrono = "0.4.24"
+cron = "0.12.0"
+url = "2.2.2"
+envy = "0.4.2"
+futures = "0.3"
+futures-util = "0.3.28"
+getrandom = "0.2.8"
+hex = "0.4.3"
+lazy_static = "1.4.0"
+libc = "0.2.139"
+num-derive = "0.3.3"
+num-traits = "0.2.15"
+prometheus = "0.13"
+regex = "1.9.5"
+reqwest = { version = "0.11.14", features = ["json", "blocking"] }
+serde = "1.0.152"
+serde_json = "1.0.93"
+sgx-quote = "0.1.0"
+sgx_types = "1.1.2"
+sha2 = "0.10.6"
+tokio = { version = "1.29.1", features = ["full"] }
+tracing-attributes = "0.1.23"
+
+openssl-sys = { version = "0.9.87", features = ["vendored"] }
+starknet = { git = "https://github.com/glihm/starknet-rs", branch = "abigen" }
+thiserror = "1.0.48"
+# ethers = { version = "2.0.3", features = ["ws", "rustls"] }
+bollard = "0.15.0"
+cached = "0.46.0"
+
+# Logging
+log = { version = "0.4", features = ["kv_unstable", "kv_unstable_std"] }
+kv-log-macro = "1.0"
+femme = "2.2.1"

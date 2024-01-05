@@ -1,0 +1,30 @@
+name: "Setup Solidity"
+
+description: "Install Forge and the Solidity toolchain"
+
+inputs:
+  solcVersion:
+    description: "the solidity compiler version"
+    required: false
+    default: "0.8.17"
+
+runs:
+  using: "composite"
+  steps:
+  - name: Install Foundry
+    uses: foundry-rs/foundry-toolchain@v1
+  - uses: actions/cache@v3
+    name: Setup solc cache
+    with:
+      path: ~/.svm
+      key: ${{ runner.os }}-solc-cache-
+  - name: Setup Solidity Compiler
+    if: ${{ github.event.inputs.skipSolidity != 'false' }}
+    shell: bash
+    run: |
+      svm install ${{ inputs.solcVersion  }}
+      svm use ${{ inputs.solcVersion  }}
+
+  - name: Install Global NPM Deps
+    shell: bash
+    run: pnpm add -g solhint

@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "exclude": [
+    "node_modules",
+    "**/tests/**/*.ts",
+    "dist"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2022",
+    "outDir": "lib-cjs",
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
+  }
+}

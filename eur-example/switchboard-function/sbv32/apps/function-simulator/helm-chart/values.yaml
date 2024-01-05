@@ -1,0 +1,12 @@
+logLevel: info
+image: switchboardlabs/function-simulator:latest
+host:
+  ip: ""
+  port: 8080
+solana:
+  mainnetRpc: "https://api.mainnet-beta.solana.com"
+  devnetRpc: "https://api.devnet.solana.com"
+ingress:
+  host: functions.switchboard.xyz
+certManager:
+  email: "scott@switchboard.xyz"

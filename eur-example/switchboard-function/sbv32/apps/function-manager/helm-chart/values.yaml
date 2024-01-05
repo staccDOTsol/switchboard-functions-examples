@@ -1,0 +1,18 @@
+chain: ""
+networkId: ""
+image: "switchboardlabs/function-manager:latest"
+logLevel: info
+rpcUrl: ""
+googlePayerSecretPath: ""
+googleApplicationCredentials: ""
+ipfsUrl: "https://ipfs.infura.io:5001"
+ipfsKey: "2OuGHppwQzKcS9HErVCZ12ngIIr"
+ipfsSecret: "cbfd29f500aee37e0b4139dabdbe396a"
+dockerUser: ""
+dockerKey: ""
+heartbeatInterval: "180"
+dockerPersistentVolumeSize: "50Gi"
+serviceAccountJson: ""
+oracleKeys:
+  - name: ""
+    quoteAddress: ""

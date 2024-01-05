@@ -1,0 +1,13 @@
+[package]
+name = "sb_util"
+authors.workspace = true
+homepage.workspace = true
+version.workspace = true
+
+[dependencies]
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

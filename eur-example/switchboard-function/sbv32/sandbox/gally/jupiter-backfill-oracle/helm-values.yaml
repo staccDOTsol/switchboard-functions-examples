@@ -1,0 +1,7 @@
+logLevel: none,backfill-oracle-worker=debug
+image: switchboardlabs/backfill-oracle-worker:dev-RC_11_15_23_18_05
+rpcUrl: https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14
+pythRpcUrl: https://hermes.pyth.network
+payerSecret: "2,212,77,239,44,160,135,1,164,185,235,55,190,160,109,27,186,53,245,155,86,94,120,117,5,52,183,210,24,208,166,231,245,88,156,243,19,34,86,163,135,156,248,170,157,117,96,159,41,233,72,77,22,5,0,8,36,60,214,159,180,241,104,239"
+programId: 3aiTRX5dhvWfgKa1kNwqF97jpGukMyphpj7UTcWmWfvV
+debug: 1

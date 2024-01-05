@@ -1,0 +1,57 @@
+{
+  "name": "@switchboard-xyz/function-simulator",
+  "description": "type definitions for using the Switchboard function simulator",
+  "version": "1.0.2",
+  "files": [
+    "ts/",
+    "lib/",
+    "package.json",
+    "index.cjs",
+    "index.js",
+    "index.d.ts"
+  ],
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build:cjs": "pnpm exec tsc -p tsconfig.cjs.json",
+    "build:esm": "pnpm exec tsc",
+    "create:cjs": "test -f index.cjs || echo \"module.exports = require(\\\"./lib/index.cjs\\\");\" > index.cjs",
+    "create:js": "test -f index.js || echo \"export * from \\\"./lib/index.js\\\";\" > index.js",
+    "create:dts": "test -f index.d.ts || echo \"export * from \\\"./lib/index.js\\\";\" > index.d.ts",
+    "create:files": "pnpm create:cjs && pnpm create:js && pnpm create:dts ",
+    "build": "pnpm exec rimraf lib index.cjs index.js index.d.ts && pnpm create:files && pnpm run build:cjs && pnpm run build:esm && cp lib-cjs/index.js lib/index.cjs && rm -rf lib-cjs",
+    "cargo:build": "cargo build",
+    "docker:build": "docker buildx build -f Dockerfile --platform linux/amd64 --tag switchboardlabs/function-simulator:dev-$(cat ../../version) -m 10g --pull --load ../../",
+    "docker:publish": "echo \"Building switchboardlabs/function-simulator:dev-$(cat ../../version) ...\"; docker buildx build -f Dockerfile --platform linux/amd64 --tag switchboardlabs/function-simulator:dev-$(cat ../../version) -m 10g --pull --push ../../ && echo \"Published switchboardlabs/function-simulator:dev-$(cat ../../version)\"",
+    "lint:broken": "cargo fmt -- --check",
+    "fix:broken": "cargo fmt",
+    "test:broken": "cargo test",
+    "test:echo": "tsx scripts/echo.ts",
+    "test:container-verify": "tsx scripts/test-container-verify.ts",
+    "test:measurement": "tsx scripts/test-measurement.ts",
+    "test:mrenclave": "tsx scripts/test-mrenclave.ts",
+    "test:solana": "tsx scripts/test-solana-simulate.ts",
+    "prod:set": "az aks get-credentials -g Default -n sb-internal",
+    "prod:uprev": "helm upgrade -i function-simulator ./helm-chart -f helm-values.yaml",
+    "prod:restart": "kubectl delete deployment function-simulator && sleep 10 && pnpm prod:uprev",
+    "prod:logs": "kubectl logs -f -l app=function-simulator --all-containers --max-log-requests=100"
+  },
+  "devDependencies": {
+    "@solana/web3.js": "^1.78.2",
+    "@switchboard-xyz/common": "workspace:*",
+    "@switchboard-xyz/solana.js": "workspace:*",
+    "@types/node": "^20.4.2",
+    "@types/ws": "^8.5.3",
+    "tsconfig": "workspace:*",
+    "ws": "^8.10.0"
+  }
+}

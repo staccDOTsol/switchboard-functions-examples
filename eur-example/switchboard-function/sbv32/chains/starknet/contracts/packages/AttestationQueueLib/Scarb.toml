@@ -1,0 +1,15 @@
+[package]
+name = "sb_attestation_queue"
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+alexandria_data_structures.workspace = true
+sb_permissions = { path = "../PermissionsLib" }
+sb_util = { path = "../Util" }
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alerting-server-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - alerting.switchboard.xyz
+    secretName: alerting-cert-manager-tls
+
+  rules:
+  - host: alerting.switchboard.xyz
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: alerting-server-service
+            port:
+              number: 8080
+        pathType: ImplementationSpecific

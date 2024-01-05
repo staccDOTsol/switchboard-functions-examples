@@ -1,0 +1,54 @@
+[toolchain]
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.devnet]
+switchboard_attestation_program = "sbattyXrzedoNATfc4L31wC9Mhxsi1BmFhTiN8gDshx"
+switchboard_v2 = "SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f"
+
+[programs.localnet]
+switchboard_attestation_program = "sbattyXrzedoNATfc4L31wC9Mhxsi1BmFhTiN8gDshx"
+switchboard_v2 = "SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+# cluster = "Localnet"
+# wallet = "~/.config/solana/id.json"
+cluster = "https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14"
+wallet = "/Users/mgild/switchboard_environments_v2/devnet/upgrade_authority/upgrade_authority.json"
+# cluster = "mainnet"
+# wallet = "/Users/mgild/switchboard_environments_v2/mainnet/upgrade_authority/upgrade_authority.json"
+
+[workspace]
+members = ["programs/attestation_program", "programs/switchboard_v2"]
+exclude = [
+    "examples/feeds/01_feed_client",
+    "examples/feeds/02_spl_native",
+    "examples/functions/01_basic_oracle",
+    "examples/functions/02_liquidity_oracle",
+    "examples/functions/03_candles_oracle",
+    "examples/functions/04_randomness_callback",
+    "examples/vrf/01_vrf_client",
+]
+resolver = "2"
+
+[scripts]
+test = "npx mocha --preserve-symlinks --exit"
+
+[test]
+startup_wait = 15000
+shutdown_wait = 2000
+upgradeable = false
+
+[test.validator]
+bind_address = "0.0.0.0"
+url = "https://api.devnet.solana.com"
+ledger = ".anchor/test-ledger"
+rpc_port = 8899
+
+[[test.validator.clone]]
+address = "5ExuoQR69trmKQfB95fDsUGsUrrChbGq9PFgt8qouncz"

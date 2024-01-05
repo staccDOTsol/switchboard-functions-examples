@@ -1,0 +1,7 @@
+packages:
+- "javascript/*"
+- "rust/*"
+- "apps/*"
+- "chains/solana"
+- "chains/evm/switchboard"
+- "chains/evm/switchboard_push_receiver"

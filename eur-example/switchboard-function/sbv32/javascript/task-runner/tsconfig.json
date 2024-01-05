@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "exclude": [
+    "node_modules",
+    "**/tests/**/*.ts",
+    "dist"
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2022",
+    "outDir": "./lib",
+    "useDefineForClassFields": true
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "src/index.ts",
+      "src/TaskRunner.ts",
+      "src/TaskSimulator.ts",
+      "src/utils/index.ts",
+      "src/clients/index.ts",
+      "src/tasks/index.ts",
+      "src/ctx/index.ts",
+      "src/errors.ts"
+    ]
+  }
+}

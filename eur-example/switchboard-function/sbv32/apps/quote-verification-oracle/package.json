@@ -1,0 +1,13 @@
+{
+  "name": "qvn",
+  "description": "",
+  "scripts": {
+    "cargo:build": "cargo build",
+    "qvn:publish": "docker buildx build -f Dockerfile --platform linux/amd64 --tag switchboardlabs/qvn:dev-$(cat ../../version)  -m 10g --pull --push ../../",
+    "docker:build": "docker buildx build -f Dockerfile --platform linux/amd64 --tag qvn -m 10g --pull --load ../../",
+    "build:tar": "pnpm docker:build && docker save --output qvn.tar qvn && chmod a+rw qvn.tar && cp qvn.tar ../function-manager/files/qvn.tar",
+    "cargo:lint": "cargo fmt -- --check",
+    "cargo:fix": "cargo fmt",
+    "test:sgx": "cargo test"
+  }
+}

@@ -1,0 +1,14 @@
+[package]
+name = "sb_routine"
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+sb_function = { path = "../FunctionLib" }
+sb_util = { path = "../Util" }
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

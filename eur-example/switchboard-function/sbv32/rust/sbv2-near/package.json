@@ -1,0 +1,8 @@
+{
+  "name": "sbv2-near",
+  "scripts": {
+    "cargo:build": "cargo build",
+    "fix": "cargo fmt",
+    "test": "cargo test"
+  }
+}

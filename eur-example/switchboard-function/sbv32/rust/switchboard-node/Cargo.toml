@@ -1,0 +1,19 @@
+[package]
+name = "switchboard-node"
+version = "0.1.0"
+edition = "2021"
+description = "Switchboard node utils"
+readme = "README.md"
+homepage = "https://switchboard.xyz"
+license = "MIT"
+
+[features]
+default = []
+all = []
+
+[dependencies]
+async-trait = "0.1.74"
+switchboard-node-health = { path = "../switchboard-node-health" }
+switchboard-node-metrics = { path = "../switchboard-node-metrics" }
+switchboard-common = { path = "../switchboard-common" }
+tokio = { version = "1", features = ["full"] }

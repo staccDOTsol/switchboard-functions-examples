@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+# Bun manifest file example
+
+{% set arch_libdir = "/lib/x86_64-linux-gnu" %}
+{% set log_level = "error" %}
+
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/sgx/bun"
+
+loader.log_level = "{{ log_level }}"
+
+loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}"
+
+# See https://gramine.readthedocs.io/en/latest/devel/performance.html#glibc-malloc-tuning
+loader.env.MALLOC_ARENA_MAX = "1"
+
+loader.env.PATH = "/bin:/usr/bin"
+loader.env.IS_SIMULATION = { passthrough = true }
+loader.env.CLUSTER = { passthrough = true }
+loader.env.MINIMUM_CONTEXT_SLOT = { passthrough = true }
+loader.env.RPC_URL = { passthrough = true }
+loader.env.PAYER = { passthrough = true }
+loader.env.FUNCTION_KEY = { passthrough = true }
+loader.env.FUNCTION_DATA = { passthrough = true }
+loader.env.FUNCTION_REQUEST_KEY = { passthrough = true }
+loader.env.FUNCTION_REQUEST_DATA = { passthrough = true }
+loader.env.FUNCTION_ROUTINE_KEY = { passthrough = true }
+loader.env.FUNCTION_ROUTINE_DATA = { passthrough = true }
+loader.env.QUEUE_AUTHORITY = { passthrough = true }
+loader.env.VERIFIER = { passthrough = true }
+loader.env.VERIFIER_ENCLAVE_SIGNER = { passthrough = true }
+loader.env.REWARD_RECEIVER = { passthrough = true }
+loader.env.CHAIN_ID = { passthrough = true }
+loader.env.VERIFYING_CONTRACT = { passthrough = true }
+loader.env.FUNCTION_PARAMS = { passthrough = true }
+loader.env.FUNCTION_CALL_IDS = { passthrough = true }
+
+# Node.js requires eventfd2() emulation otherwise fails on `(uv_loop_init(&tracing_loop_)) == (0)'
+sys.insecure__allow_eventfd = true
+
+loader.pal_internal_mem_size = "128M"
+sgx.enclave_size = "128M"
+sgx.max_threads = 128
+sgx.nonpie_binary = true
+sgx.edmm_enable = {{ 'false' }}
+sgx.remote_attestation = "dcap"
+
+fs.mounts = [
+  { path = "/etc", uri = "file:/etc" },
+
+  { uri = "file:/sgx", path = "/sgx" },
+
+  { uri = "file:{{ gramine.runtimedir() }}", path = "/lib" },
+  { uri = "file:{{ arch_libdir }}", path = "{{ arch_libdir }}" },
+  { uri = "file:/usr/{{ arch_libdir }}", path = "/usr/{{ arch_libdir }}" },
+  { uri = "file:/usr", path = "/usr" },
+  { uri = "file:/lib64", path = "/lib64" },
+
+  # SSL
+  { uri = "file:/etc/ssl/certs", path = "/etc/ssl/certs" },
+  { uri = "file:/usr/lib/ssl/certs", path = "/usr/lib/ssl/certs" },
+
+  # Bun / App
+  { uri = "file:/sgx/bun", path = "/sgx/bun" },
+
+  # Key options:
+  # _sgx_mrenclave, anyone with the same enclave signature can unseal
+  # _sgx_mrsigner, only the same physical machine AND running the same image can seal/unseal
+  { type = "encrypted", uri = "file:/data/protected_files", path = "/data/protected_files", key_name = "_sgx_mrenclave" },
+]
+
+sgx.trusted_files = [
+  "file:{{ gramine.libos }}",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:{{ arch_libdir }}/",
+  "file:/usr/{{ arch_libdir }}/",
+  "file:/lib64/",
+  "file:/usr/include/",
+
+  # SSL
+  "file:/etc/ssl/",
+  "file:/usr/lib/ssl/certs/",
+
+  # Bun / App
+  "file:/sgx/bun",
+]
+
+sgx.allowed_files = [
+    "file:/etc/hosts",
+    "file:/etc/host.conf",
+    "file:/etc/gai.conf",
+    "file:/etc/resolv.conf",
+    "file:/etc/localtime",
+    "file:/etc/nsswitch.conf",
+]

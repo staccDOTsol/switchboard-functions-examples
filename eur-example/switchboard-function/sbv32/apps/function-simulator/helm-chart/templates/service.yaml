@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: function-simulator
+  # annotations:
+  #   service.beta.kubernetes.io/azure-load-balancer-ipv4: "51.104.211.149"
+spec:
+  type: ClusterIP
+  selector:
+    app: function-simulator
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

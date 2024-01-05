@@ -1,0 +1,28 @@
+# This does not play well with docker hydro build
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    network_mode: host
+    environment:
+      POSTGRES_PASSWORD: examplepassword
+      POSTGRES_USER: exampleuser
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/
+#     networks:
+#       - api-network
+#   api:
+#     build: .
+#     depends_on:
+#       - db
+#     environment:
+#       DATABASE_URL: postgres://exampleuser:examplepassword@db:5432/exampledb
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - api-network
+
+# networks:
+#   api-network:
+#     driver: bridge

@@ -1,0 +1,18 @@
+{
+  "name": "function-manager",
+  "description": "",
+  "scripts": {
+    "build:qvn": "cd ../quote-verification-oracle && pnpm build:tar; cd ../function-manager",
+    "cargo:build": "cargo build",
+    "docker:build": "docker buildx build -f Dockerfile --platform linux/amd64 --tag switchboardlabs/function-manager:dev-$(cat ../../version) -m 10g --pull --load ../../",
+    "docker:publish": "echo \"Building switchboardlabs/function-manager:dev-$(cat ../../version) ...\"; docker buildx build -f Dockerfile --platform linux/amd64 --tag switchboardlabs/function-manager:dev-$(cat ../../version) -m 10g --pull --push ../../ && echo \"Published switchboardlabs/function-manager:dev-$(cat ../../version)\"",
+    "cargo:lint": "cargo fmt -- --check",
+    "cargo:fix": "cargo fmt",
+    "cargo:test": "cargo test",
+    "prod:set": "az aks get-credentials -g Default -n sb-internal",
+    "prod:uprev": "helm upgrade -i function-manager ./helm-chart -f helm-values.yaml",
+    "prod:restart": "pnpm prod:shutdown && sleep 10 && pnpm prod:uprev",
+    "prod:shutdown": "kubectl delete pods -l app=function-manager",
+    "prod:logs": "kubectl logs -f -l app=function-manager --all-containers --max-log-requests=100"
+  }
+}

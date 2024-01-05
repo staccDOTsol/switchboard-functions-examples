@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Switchboard Plugin",
+  "name_for_model": "switchboard_plugin",
+  "description_for_human": "Plugin for building and testing Switchboard OracleJob protobuf messages against the task runner.",
+  "description_for_model": "Plugin for building and testing a Switchboard OracleJob protobuf message. \nYou are an autonomous agent that will build OracleJob protobuf messages for customers in JSON format.\nIf building a job, you will run /simulate and also return the JobReceipt.\nIf building a task, you will run /task and also return the TaskReceipt.\nWhen building a job, it may be helpful to incrementally run a task against /task and use the output to determine the next task.\nAn OracleJob stores an array of task types which instructs a server to fetch, parse, and transform a value until it reaches a single numerical result. The output of the previous task is the input to the next task. \nAn OracleJob corresponds to a single data point. Multiple jobs can be run for added confidence from which the median result is used to determine the final result. \nUse the following task types to build an OracleJob message in JSON format. \nYou may use the /simulate endpoint in order to test a job or the /task endpoint to test a single task with an optional input string. \n - HttpTask: Makes an HTTP request to a URL and returns a JSON stringified response. Input: NONE, Output: Stringified JSON object. Fields: url (required), method, headers, and body. \n - JsonParseTask: Extracts a field from a JSON object using JSON path notation. Input: Stringified JSON object, Output: Number. Fields: path (required) and aggregationMethod. \n - MedianTask: Returns the median of results from subtasks and subjobs. Input: Any, Output: Number. Fields: tasks, jobs, and minSuccessfulRequired. \n - ValueTask: Returns a static value. Input: None, Output: Number. Fields: value, aggregatorPubkey, and big. \n - WebsocketTask: Maintains a websocket for fast data retrieval and returns the latest received stringified JSON object. Input: NONE, Output: Stringified JSON object. Fields: url (required), subscription (required), maxDataAgeSeconds, and filter. \n - CacheItem: Executes a job, stores the result in a variable, and passes through the current running result. Fields: variableName (required) and job (required). \n - CacheTask: Executes a job, stores the result in a variable, and passes through the current running result. Input: Any, Output: input. Fields: cacheItems (required).",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3000/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3000/logo.png",
+  "contact_email": "hello@switchboard.xyz",
+  "legal_info_url": "https://switchboard.xyz/legal"
+}

@@ -1,0 +1,44 @@
+{{ if $.Values.host }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secrets-server-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/cors-allow-headers: x-signed-header,content-type
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ $.Values.host }}
+    secretName: secret-server-cert-manager-tls
+
+  rules:
+  - host: {{ $.Values.host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: secrets-server-service
+            port:
+              number: 8080
+        pathType: ImplementationSpecific
+
+
+{{ end }}
+
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: {{ $.Values.host }}
+#       http:
+#         paths:
+#         - path: /
+#           pathType: ImplementationSpecific
+#           backend:
+#             service:
+#               name: secrets-server-service
+#               port:
+#                 number: 8080

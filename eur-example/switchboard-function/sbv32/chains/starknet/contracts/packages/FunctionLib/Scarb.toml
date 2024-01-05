@@ -1,0 +1,15 @@
+[package]
+name = "sb_function"
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+sb_attestation_queue = { path = "../AttestationQueueLib" }
+sb_util = { path = "../Util" }
+sb_verifier = { path = "../VerifierLib" }
+snforge_std.workspace = true
+starknet.workspace = true
+
+[tool]
+fmt.workspace = true
+snforge.workspace = true

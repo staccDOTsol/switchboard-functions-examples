@@ -1,0 +1,46 @@
+[package]
+name = "switchboard_v2"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "switchboard_v2"
+doctest = false
+
+[features]
+no-entrypoint = []
+cpi = ["no-entrypoint"]
+devnet = []
+mainnet = []
+u64_backend = []
+alloc = []
+default = ["u64_backend"]
+
+[dependencies]
+switchboard-solana = "0.28.73"
+# anchor-lang = { git = "https://github.com/coral-xyz/anchor", version = "0.27.0", features = [
+#     "init-if-needed",
+#     "allow-missing-optionals"
+# ] }
+# anchor-spl = { git = "https://github.com/coral-xyz/anchor" }
+anchor-lang = { version = "0.28.0", features = [
+    "init-if-needed",
+    "allow-missing-optionals",
+] }
+anchor-spl = { version = "0.28.0" }
+arrayref = "0.3.6"
+bytemuck = "1.13.1"
+byteorder = { version = "^1.2.3", default-features = false, features = [
+    "i128",
+] }
+digest = { version = "0.9", default-features = false }
+hex = "0.4.3"
+rust_decimal = { version = "=1.26.1" }
+sha2 = "0.8.0"
+solana-program = "=1.16.16"
+subtle = { version = "^2.2.1", default-features = false }
+zeroize = { version = "1", default-features = false }
+sgx-quote = "0.1.0"
+serde_with = "=1.14.0"

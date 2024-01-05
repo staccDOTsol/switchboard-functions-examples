@@ -1,0 +1,42 @@
+[package]
+name = "switchboard_attestation_program"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "switchboard_attestation_program"
+doctest = false
+
+[features]
+no-entrypoint = []
+cpi = ["no-entrypoint"]
+devnet = []
+mainnet = []
+u64_backend = []
+alloc = []
+default = ["u64_backend"]
+
+[dependencies]
+anchor-lang = { version = "0.28.0", features = [
+  "init-if-needed",
+  "allow-missing-optionals",
+] }
+anchor-spl = { version = "0.28.0" }
+arrayref = "0.3.6"
+bytemuck = "1.13.1"
+byteorder = { version = "^1.2.3", default-features = false, features = [
+  "i128",
+] }
+digest = { version = "0.9", default-features = false }
+hex = "0.4.3"
+rust_decimal = { version = "=1.26.1" }
+sgx-quote = "0.1.0"
+sha2 = "0.8.0"
+subtle = { version = "^2.2.1", default-features = false }
+x25519-dalek = { version = "1.2.0", default-features = false }
+zeroize = { version = "1", default-features = false }
+getrandom = { version = "0.2.10", features = ["custom"] }
+solana-program = "=1.16.16"
+solana-address-lookup-table-program = "=1.16.16"

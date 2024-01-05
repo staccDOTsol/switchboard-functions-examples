@@ -1,0 +1,865 @@
+{
+  "tasks": [
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "ENDING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "cronParseTask": {
+                    "cronPattern": "* * * * * *",
+                    "clockOffset": 0,
+                    "clock": 0
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "1000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "STARTING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ENDING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "subtractTask": {
+                    "big": "60000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "BTC_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=ETH&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=ETH-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=SOL&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=SOL-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "TOTAL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${BTC_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${ETH_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${SOL_INDEX}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "meanTask": {
+        "jobs": [
+          {
+            "tasks": [
+              {
+                "valueTask": {
+                  "big": "${BTC_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${ETH_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${SOL_COMPONENT}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "ENDING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "cronParseTask": {
+                    "cronPattern": "* * * * * *",
+                    "clockOffset": 0,
+                    "clock": 0
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "1000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "STARTING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ENDING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "subtractTask": {
+                    "big": "60000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "BTC_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=ETH&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=ETH-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=SOL&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=SOL-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "TOTAL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${BTC_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${ETH_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${SOL_INDEX}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "meanTask": {
+        "jobs": [
+          {
+            "tasks": [
+              {
+                "valueTask": {
+                  "big": "${BTC_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${ETH_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${SOL_COMPONENT}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "ENDING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "cronParseTask": {
+                    "cronPattern": "* * * * * *",
+                    "clockOffset": 0,
+                    "clock": 0
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "1000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "STARTING_TIMESTAMP",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ENDING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "subtractTask": {
+                    "big": "60000"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "BTC_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=ETH&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=ETH-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_INDEX",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=SOL&end_timestamp=${ENDING_TIMESTAMP}&resolution=60&start_timestamp=${STARTING_TIMESTAMP}"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.data.*.4",
+                    "aggregationMethod": 4
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "httpTask": {
+                    "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=SOL-PERPETUAL"
+                  }
+                },
+                {
+                  "jsonParseTask": {
+                    "path": "$.result.stats.volume_usd",
+                    "aggregationMethod": 0
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "TOTAL_VOLUME",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "addTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cacheTask": {
+        "cacheItems": [
+          {
+            "variableName": "BTC_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${BTC_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${BTC_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "ETH_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${ETH_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${ETH_INDEX}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "variableName": "SOL_COMPONENT",
+            "job": {
+              "tasks": [
+                {
+                  "valueTask": {
+                    "big": "${SOL_VOLUME}"
+                  }
+                },
+                {
+                  "divideTask": {
+                    "big": "${TOTAL_VOLUME}"
+                  }
+                },
+                {
+                  "multiplyTask": {
+                    "big": "${SOL_INDEX}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "meanTask": {
+        "jobs": [
+          {
+            "tasks": [
+              {
+                "valueTask": {
+                  "big": "${BTC_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${ETH_COMPONENT}"
+                }
+              },
+              {
+                "addTask": {
+                  "big": "${SOL_COMPONENT}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

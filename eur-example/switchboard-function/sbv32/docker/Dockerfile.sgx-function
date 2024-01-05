@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1.4
+FROM switchboardlabs/gramine
+
+LABEL "org.opencontainers.image.vendor"="Switchboard Labs"
+LABEL "org.opencontainers.image.title"="Switchboard SGX Function Base Image"
+LABEL "org.opencontainers.image.source"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.url"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.description"="Container used for the Switchboard Functions runtime"
+
+RUN mkdir -p /data/protected_files && \
+    mkdir -p /sgx && \
+    mkdir -p /app && \
+    mkdir -p /sgx/nodejs && \
+    mkdir -p /home/credentials
+# Can be overwritten by mounting a volume
+RUN echo "{}" > /home/credentials/gcp-sa.json
+
+# install Azure DCAP library
+RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,id=debconf,target=/var/cache/debconf,sharing=locked \
+    set -exu && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
+    apt -y --no-install-recommends install \
+    clang \
+    gcc \
+    libcurl4-openssl-dev \
+    libssl-dev
+
+# Get Rust; NOTE: using sh for better compatibility with other base images
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+# Add .cargo/bin to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN --mount=target=/home/root/.cargo/git,type=cache \
+    --mount=target=/home/root/.cargo/registry,type=cache \
+    cargo install cargo-strip && \
+    cargo install sb-func-tools
+
+# Add startup files, user can overwrite these
+COPY --chown=root:root ./configs/boot.sh /boot.sh
+COPY --chown=root:root ./configs/app.manifest.template /sgx/app.manifest.template
+COPY --chown=root:root ./configs/nodejs.manifest.template /sgx/nodejs.manifest.template
+COPY --chown=root:root ./configs/get_measurement.sh /get_measurement.sh
+RUN chmod a+x /boot.sh && \
+    chmod a+x /get_measurement.sh
+
+WORKDIR /app
+
+ENTRYPOINT ["/bin/bash", "/boot.sh"]

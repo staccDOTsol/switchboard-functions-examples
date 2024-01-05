@@ -1,0 +1,74 @@
+name: Solana
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    # Remove this if we want to always run these tests for every push to main
+    paths:
+    - chains/solana/programs/**
+    - javascript/solana.js/src/**
+    - javascript/solana.js/test/**
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+    - chains/solana/programs/**
+    - javascript/solana.js/src/**
+    - javascript/solana.js/test/**
+
+jobs:
+  test-solana-js:
+    name: "@switchboard-xyz/solana.js"
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+        submodules: recursive
+    - name: Setup Workspace
+      uses: ./.github/actions/setup-workspace
+    - name: Build "@switchboard-xyz/solana.js"
+      working-directory: javascript/solana.js
+      run: turbo build
+    - name: Start Local Validator
+      uses: switchboard-xyz/solana-local-validator@v0.1
+      with:
+        solana-version: v1.16.17
+        anchor-version: v0.29.0
+        cluster: devnet
+        args: "--url ${{ secrets.DEVNET_RPC_URL }} --clone SW1TCH7qEPTdLsDHRgPuMQjbQxKdH2aBStViMFnt64f --clone 7nYabs9dUhvxYwdTnrWVBL9MYviKSfrEbdWCUbcnwkpF --clone Fi8vncGpNKbq62gPo56G4toCehWNy77GgqGkTaAF5Lkk --clone sbattyXrzedoNATfc4L31wC9Mhxsi1BmFhTiN8gDshx --clone BzqtGXZPiDSinP4xMFgPf6FLgSa6iPufK4m4JJFgMnTK --clone 5ExuoQR69trmKQfB95fDsUGsUrrChbGq9PFgt8qouncz"
+    - name: Run Tests
+      working-directory: javascript/solana.js
+      run: pnpm test:localnet
+      env:
+        SOLANA_LOCALNET: 1
+        CI: true
+  solana-program:
+    name: Solana Program
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Workspace
+      uses: ./.github/actions/setup-workspace
+      with:
+        crates: anchor-cli,svm-rs
+    - name: Setup Solana
+      uses: ./.github/actions/setup-solana
+      with:
+        payer-secret: ${{ secrets.SOLANA_DEVNET_PAYER_SECRET }}
+    - name: Setup cache
+      uses: actions/cache@v3
+      with:
+        key: ${{ runner.os }}-solana-programs-${{ hashFiles( 'chains/solana/Cargo.toml', 'chains/solana/Cargo.lock', 'chains/solana/programs/**' ) }}
+        path: ./chains/solana/target
+        restore-keys: |
+          ${{ runner.os }}-solana-programs-${{ hashFiles( 'chains/solana/Cargo.toml', 'chains/solana/Cargo.lock', 'chains/solana/programs/**' ) }}
+          ${{ runner.os }}-solana-programs-
+    - name: Build Solana Programs
+      working-directory: ./chains/solana
+      run: anchor build
+    - name: Test Solana Programs
+      working-directory: ./chains/solana
+      run: anchor test --provider.cluster localnet --provider.wallet ~/.config/solana/id.json

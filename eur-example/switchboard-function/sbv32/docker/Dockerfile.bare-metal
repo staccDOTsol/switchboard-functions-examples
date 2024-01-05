@@ -1,0 +1,101 @@
+# syntax=docker/dockerfile:1.4
+
+# https://hub.docker.com/r/gramineproject/gramine
+FROM gramineproject/gramine:v1.5
+
+LABEL "org.opencontainers.image.vendor"="Switchboard Labs"
+LABEL "org.opencontainers.image.title"="Switchboard Gramine Runtime"
+LABEL "org.opencontainers.image.source"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.url"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.description"="Image used for Gramine runtime applications"
+
+ENV CPATH="/opt/intel/sgxsdk/include"
+ENV PATH="${CPATH}:${PATH}" 
+ENV AZDCAP_DEBUG_LOG_LEVEL="ERROR"
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV DISTRO="ubuntu20.04-server"
+
+RUN groupadd sgx
+RUN usermod -aG sgx root
+
+RUN groupadd sgx_prv
+RUN usermod -aG sgx_prv root
+
+RUN mkdir -p /data/protected_files && \
+    mkdir /sgx && \
+    mkdir /app && \
+    mkdir -p /etc/init && \
+    mkdir -p /var/run/aesmd && \
+    mkdir -p /etc/docker && \
+    mkdir -p /etc/apt/keyrings && \
+    mkdir -p /opt/intel && \
+    touch /etc/modules
+
+RUN chmod 0755 /var/run/aesmd
+
+# Configure apt caching for use with BuildKit.
+# The default Debian Docker image has special apt config to clear caches,
+# but if we are using --mount=type=cache, then we want to keep the files.
+# https://github.com/debuerreotype/debuerreotype/blob/master/scripts/debuerreotype-minimizing-config
+RUN set -exu && \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
+    echo 'Acquire::CompressionTypes::Order:: "gz";' > /etc/apt/apt.conf.d/99use-gzip-compression
+
+###############################################################
+### Linux Setup
+###############################################################
+# Base Deps
+RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,id=debconf,target=/var/cache/debconf,sharing=locked \
+    set -exu && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
+    apt -y --no-install-recommends install \
+    apt-transport-https \
+    build-essential \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    net-tools \
+    software-properties-common
+#change focal to jammy if ubuntu 22.04
+RUN echo 'deb [arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main' | sudo tee /etc/apt/sources.list.d/intel-sgx.list
+RUN wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | sudo apt-key add
+# Add NodeJS registry
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | \
+    gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+ENV NODE_MAJOR 18
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | \
+    tee /etc/apt/sources.list.d/nodesource.list
+
+# Runtime deps
+RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lib,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,id=debconf,target=/var/cache/debconf,sharing=locked \
+    set -exu && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
+    apt -y --no-install-recommends install \
+    libsgx-dcap-default-qpl \
+    lsb-release \
+    make \
+    nodejs \
+    openssl \
+    pkg-config \
+    python3 \
+    unzip \
+    vim \
+    wget \
+    xxd
+
+###############################################################
+### Config Files (Copy last to avoid cache busting)
+###############################################################
+COPY ./configs/seccomp.json /configs/seccomp.json
+COPY ./configs/sgx_bare_metal_qcnl.conf /etc/sgx_default_qcnl.conf
+
+ENV AZDCAP_DEBUG_LOG_LEVEL="WARNING"
+WORKDIR /app
+
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/restart_aesm.sh ; exec /bin/bash"]

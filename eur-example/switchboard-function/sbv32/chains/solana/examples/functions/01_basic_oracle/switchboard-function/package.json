@@ -1,0 +1,10 @@
+{
+  "name": "basic-oracle-function",
+  "scripts": {
+    "build:cargo": "make",
+    "fix": "cargo fmt"
+  },
+  "dependencies": {
+    "solana-basic-oracle": "workspace:*"
+  }
+}

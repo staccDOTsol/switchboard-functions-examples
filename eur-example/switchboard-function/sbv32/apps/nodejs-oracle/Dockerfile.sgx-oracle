@@ -1,0 +1,23 @@
+FROM switchboardlabs/gramine
+
+# Create directory structure, oracle will be at /sgx/oracle/index.js
+RUN mkdir -p /root/sbv2-oracle/node/dist/oracle && mkdir -p /sgx/oracle
+
+# Copy the build artifacts
+COPY --from=switchboardlabs/ecvrf /rust-ecvrf /rust-ecvrf
+COPY ./dist/oracle/ /sgx/oracle/
+
+# Copy the SGX configs
+WORKDIR /sgx
+COPY ./configs/boot.sh /boot.sh
+RUN chmod +x /boot.sh
+COPY ./configs/oracle.manifest.template ./oracle.manifest.template
+COPY ./configs/pccs.json /opt/intel/sgx-dcap-pccs/config/default.json
+COPY ./configs/sgx_default_qcnl.conf /etc/sgx_default_qcnl.conf
+
+# Setup Gramine
+RUN gramine-sgx-gen-private-key
+RUN gramine-manifest oracle.manifest.template > oracle.manifest
+RUN gramine-sgx-sign --manifest oracle.manifest --output oracle.manifest.sgx
+
+CMD ["bash", "/boot.sh"]

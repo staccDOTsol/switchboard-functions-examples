@@ -1,0 +1,133 @@
+{{- $values := .Values -}}
+{{- range $index, $key := $values.oracleKeys }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $values.chain }}-{{ $key.name }}
+  labels:
+    chain: {{ $values.chain }}
+    app: function-manager
+    should_scrape: scrape
+    queue: {{ $key.queue }}
+    oracleID: {{ $key.name }}
+    azure.workload.identity/use: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      chain: {{ $values.chain }}
+      app: function-manager
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        chain: {{ $values.chain }}
+        app: function-manager
+    spec:
+      hostNetwork: true
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - function-manager
+            topologyKey: kubernetes.io/hostname
+      containers:
+        - name: function-manager
+          image: {{ $values.image | default "switchboardlabs/function-manager:latest" }}
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+          env:
+            - name: RUST_LOG
+              value: {{ $values.logLevel | default "info" }}
+            - name: CHAIN
+              value: {{ $values.chain }}
+            - name: CHAIN_ID
+              value: {{ if $key.evmChainId }}{{ $key.evmChainId | quote }}{{ else }}{{ $values.evmChainId | default "0" | quote }}{{ end }}
+            - name: QUOTE_KEY
+              value: {{ $key.quoteAddress }}
+            - name: RPC_URL
+              value: {{ if $key.rpcUrl }}{{ $key.rpcUrl }}{{ else }}{{ $values.rpcUrl }}{{ end }}
+            - name: HEARTBEAT_INTERVAL
+              value: {{ if $key.heartbeatInterval }}{{ $key.heartbeatInterval | quote }}{{ else }}{{ $values.heartbeatInterval | default "180" | quote }}{{ end }}
+
+          # Required for verifier oracles to post their quotes for verification
+            - name: IPFS_URL
+              value: {{ $values.ipfsUrl }}
+            - name: IPFS_KEY
+              value: {{ $values.ipfsKey }}
+            - name: IPFS_SECRET
+              value: {{ $values.ipfsSecret }}
+
+            # One of these is required
+            - name: PAYER_SECRET
+              value: {{ if $key.payerSecret }}{{ $key.payerSecret | quote }}{{ else }}{{ $values.payerSecret | quote }}{{ end }}
+            - name: FS_PAYER_SECRET_PATH
+              value: {{ if $key.fsPayerSecretPath }}{{ $key.fsPayerSecretPath | quote }}{{ else }}{{ $values.fsPayerSecretPath | quote }}{{ end }}
+            - name: GOOGLE_PAYER_SECRET_PATH
+              value: {{ $key.googlePayerSecretPath }}
+            
+            # Optional, used to authenticate secret fetching
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: {{ $key.googleApplicationCredentials }}
+
+            - name: QUEUE
+              value: {{ $key.queueAddress }}
+            
+            # Optional, is this needed? Used to pull images faster?
+            - name: DOCKER_USER
+              value: {{ $values.dockerUser }}
+            - name: DOCKER_KEY
+              value: {{ $values.dockerKey }}
+
+            # EVM specific config
+            - name: CONTRACT_ADDRESS
+              value: {{ if $key.contractAddress }}{{ $key.contractAddress }}{{ else }}{{ $values.contractAddress }}{{ end }}
+
+          resources:
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+              sgx.intel.com/epc: 10485760
+              sgx.intel.com/enclave: 1
+              sgx.intel.com/provision: 1
+            requests:
+              cpu: 1250m
+              memory: 1Gi
+              sgx.intel.com/epc: 10485760
+              sgx.intel.com/enclave: 1
+              sgx.intel.com/provision: 1
+          volumeMounts:
+            - name: docker-graph-storage
+              mountPath: /var/lib/docker
+            - name: var-run-aesmd
+              mountPath: /var/run/aesmd
+            - name: dev-sgx-enclave
+              mountPath: /dev/sgx_enclave
+            - name: dev-sgx-provision
+              mountPath: /dev/sgx_provision
+      volumes:
+        - name: docker-graph-storage
+          persistentVolumeClaim:
+            claimName: function-manager-{{ $values.chain }}-{{ $key.name }}-pvc
+        - name: google-cloud-key
+          secret:
+            secretName: {{ $.Values.appType}}-service-account
+        - name: var-run-aesmd
+          hostPath:
+            path: /var/run/aesmd/
+        - name: dev-sgx-enclave
+          hostPath:
+            path: /dev/sgx_enclave
+        - name: dev-sgx-provision
+          hostPath:
+            path: /dev/sgx_provision
+---
+{{ end }}

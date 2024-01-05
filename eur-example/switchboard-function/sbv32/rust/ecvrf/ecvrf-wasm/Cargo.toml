@@ -1,0 +1,18 @@
+[package]
+name = "ecvrf-wasm"
+version = "1.0.0"
+authors = ["gallynaut <connerngallagher@gmail.com>"]
+license = "GPLv3"
+description = "Rust tool for generating and verifying ECVRFs on the Ed25519 curve using the Ristretto group"
+keywords = [ "cryptography", "vrf" ]
+readme = "README.md"
+
+[dependencies]
+rust_ecvrf = { path = "../rust-ecvrf" }
+wasm-bindgen = "0.2.84"
+bincode = "1.0.1"
+rand = "=0.7.0"
+# clear_on_drop = { version = "=0.2.5", features = ["wasm"], default-features = false }
+
+[lib]
+crate-type = ["cdylib"]

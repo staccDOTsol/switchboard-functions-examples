@@ -1,0 +1,3486 @@
+{
+  "version": "0.1.0",
+  "name": "switchboard_v2",
+  "instructions": [
+    {
+      "name": "aggregatorAddJob",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorAddJobParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorInit",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorLock",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorLockParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorOpenRound",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payoutWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorOpenRoundParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorRemoveJob",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorRemoveJobParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSaveResult",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feedPermission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePermission",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "historyBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSaveResultParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSaveResultV2",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feedPermission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oraclePermission",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "historyBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSaveResultParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSetAuthority",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "newAuthority",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSetAuthorityParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSetConfig",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSetConfigParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSetResolutionMode",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "slidingWindow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSetResolutionModeParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSetHistoryBuffer",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "buffer",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSetHistoryBufferParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregatorSetQueue",
+      "accounts": [
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AggregatorSetQueueParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "bufferRelayerInit",
+      "accounts": [
+        {
+          "name": "bufferRelayer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "job",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "BufferRelayerInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "bufferRelayerOpenRound",
+      "accounts": [
+        {
+          "name": "bufferRelayer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "BufferRelayerOpenRoundParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "bufferRelayerSaveResult",
+      "accounts": [
+        {
+          "name": "bufferRelayer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "oracle",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "BufferRelayerSaveResultParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "crankInit",
+      "accounts": [
+        {
+          "name": "crank",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "buffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "CrankInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "crankPop",
+      "accounts": [
+        {
+          "name": "crank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payoutWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "crankDataBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueDataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "CrankPopParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "crankPopV2",
+      "accounts": [
+        {
+          "name": "crank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payoutWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "crankDataBuffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueDataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "CrankPopParamsV2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "crankPush",
+      "accounts": [
+        {
+          "name": "crank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "aggregator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "CrankPushParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "jobInit",
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "JobInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "jobSetData",
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "JobSetDataParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "leaseExtend",
+      "accounts": [
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "aggregator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "funder",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "LeaseExtendParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "leaseInit",
+      "accounts": [
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "aggregator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "funder",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "LeaseInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "leaseSetAuthority",
+      "accounts": [
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "withdrawAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "newAuthority",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "LeaseSetAuthorityParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "leaseWithdraw",
+      "accounts": [
+        {
+          "name": "lease",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "aggregator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "withdrawAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "withdrawAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "LeaseWithdrawParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oracleHeartbeat",
+      "accounts": [
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gcOracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "OracleHeartbeatParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oracleInit",
+      "accounts": [
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "wallet",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "OracleInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oracleQueueInit",
+      "accounts": [
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "buffer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "OracleQueueInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oracleQueueSetConfig",
+      "accounts": [
+        {
+          "name": "queue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "OracleQueueSetConfigParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oracleWithdraw",
+      "accounts": [
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "withdrawAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "OracleWithdrawParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "permissionInit",
+      "accounts": [
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "granter",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "grantee",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "PermissionInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "permissionSet",
+      "accounts": [
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "PermissionSetParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "programConfig",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "programState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "daoMint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "ProgramConfigParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "programInit",
+      "accounts": [
+        {
+          "name": "state",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "daoMint",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "ProgramInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vaultTransfer",
+      "accounts": [
+        {
+          "name": "state",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "to",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VaultTransferParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfInit",
+      "accounts": [
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfCloseAction",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "solDest",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrowDest",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfCloseParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfLiteCloseAction",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrfLite",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "solDest",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrowDest",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfLiteCloseParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfLiteInit",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfLiteInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfLiteProveAndVerify",
+      "accounts": [
+        {
+          "name": "vrfLite",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "callbackPid",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "oracleWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructionsSysvar",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfLiteProveAndVerifyParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfLiteRequestRandomness",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrfLite",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "recentBlockhashes",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfLiteRequestRandomnessParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfPoolInit",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vrfPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfPoolInitParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfPoolRemove",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrfPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfPoolRemoveParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfPoolAdd",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vrfPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vrfLite",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfPoolAddParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfPoolRequest",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrfPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "queue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "recentBlockhashes",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfPoolRequestParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfProveAndVerify",
+      "accounts": [
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "callbackPid",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "oracleWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructionsSysvar",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfProveAndVerifyParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfRequestRandomness",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleQueue",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "queueAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "dataBuffer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "permission",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payerWallet",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payerAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "recentBlockhashes",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "programState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfRequestRandomnessParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vrfSetCallback",
+      "accounts": [
+        {
+          "name": "vrf",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "VrfSetCallbackParams"
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "SbState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenVault",
+            "type": "publicKey"
+          },
+          {
+            "name": "daoMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 992]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TaskSpecRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "hash",
+            "type": {
+              "defined": "Hash"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "AggregatorAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "array": ["u8", 128]
+            }
+          },
+          {
+            "name": "reserved1",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "queuePubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "oracleRequestBatchSize",
+            "type": "u32"
+          },
+          {
+            "name": "minOracleResults",
+            "type": "u32"
+          },
+          {
+            "name": "minJobResults",
+            "type": "u32"
+          },
+          {
+            "name": "minUpdateDelaySeconds",
+            "type": "u32"
+          },
+          {
+            "name": "startAfter",
+            "type": "i64"
+          },
+          {
+            "name": "varianceThreshold",
+            "type": {
+              "defined": "SwitchboardDecimal"
+            }
+          },
+          {
+            "name": "forceReportPeriod",
+            "type": "i64"
+          },
+          {
+            "name": "expiration",
+            "type": "i64"
+          },
+          {
+            "name": "consecutiveFailureCount",
+            "type": "u64"
+          },
+          {
+            "name": "nextAllowedUpdateTime",
+            "type": "i64"
+          },
+          {
+            "name": "isLocked",
+            "type": "bool"
+          },
+          {
+            "name": "crankPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "latestConfirmedRound",
+            "type": {
+              "defined": "AggregatorRound"
+            }
+          },
+          {
+            "name": "currentRound",
+            "type": {
+              "defined": "AggregatorRound"
+            }
+          },
+          {
+            "name": "jobPubkeysData",
+            "type": {
+              "array": ["publicKey", 16]
+            }
+          },
+          {
+            "name": "jobHashes",
+            "type": {
+              "array": [
+                {
+                  "defined": "Hash"
+                },
+                16
+              ]
+            }
+          },
+          {
+            "name": "jobPubkeysSize",
+            "type": "u32"
+          },
+          {
+            "name": "jobsChecksum",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "historyBuffer",
+            "type": "publicKey"
+          },
+          {
+            "name": "previousConfirmedRoundResult",
+            "type": {
+              "defined": "SwitchboardDecimal"
+            }
+          },
+          {
+            "name": "previousConfirmedRoundSlot",
+            "type": "u64"
+          },
+          {
+            "name": "disableCrank",
+            "type": "bool"
+          },
+          {
+            "name": "jobWeights",
+            "type": {
+              "array": ["u8", 16]
+            }
+          },
+          {
+            "name": "creationTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "resolutionMode",
+            "type": {
+              "defined": "AggregatorResolutionMode"
+            }
+          },
+          {
+            "name": "basePriorityFee",
+            "type": "u32"
+          },
+          {
+            "name": "priorityFeeBump",
+            "type": "u32"
+          },
+          {
+            "name": "priorityFeeBumpPeriod",
+            "type": "u32"
+          },
+          {
+            "name": "maxPriorityFeeMultiplier",
+            "type": "u32"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 122]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "SlidingResultAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                {
+                  "defined": "SlidingWindowElement"
+                },
+                16
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 512]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PermissionAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "permissions",
+            "type": "u32"
+          },
+          {
+            "name": "granter",
+            "type": "publicKey"
+          },
+          {
+            "name": "grantee",
+            "type": "publicKey"
+          },
+          {
+            "name": "expiration",
+            "type": "i64"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 256]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "RealmSpawnRecordAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 256]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LeaseAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow",
+            "type": "publicKey"
+          },
+          {
+            "name": "queue",
+            "type": "publicKey"
+          },
+          {
+            "name": "aggregator",
+            "type": "publicKey"
+          },
+          {
+            "name": "tokenProgram",
+            "type": "publicKey"
+          },
+          {
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "name": "crankRowCount",
+            "type": "u32"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "updateCount",
+            "type": "u128"
+          },
+          {
+            "name": "withdrawAuthority",
+            "type": "publicKey"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 256]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "OracleQueueAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "array": ["u8", 64]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "oracleTimeout",
+            "type": "u32"
+          },
+          {
+            "name": "reward",
+            "type": "u64"
+          },
+          {
+            "name": "minStake",
+            "type": "u64"
+          },
+          {
+            "name": "slashingEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "varianceToleranceMultiplier",
+            "type": {
+              "defined": "SwitchboardDecimal"
+            }
+          },
+          {
+            "name": "feedProbationPeriod",
+            "type": "u32"
+          },
+          {
+            "name": "currIdx",
+            "type": "u32"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "gcIdx",
+            "type": "u32"
+          },
+          {
+            "name": "consecutiveFeedFailureLimit",
+            "type": "u64"
+          },
+          {
+            "name": "consecutiveOracleFailureLimit",
+            "type": "u64"
+          },
+          {
+            "name": "unpermissionedFeedsEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "unpermissionedVrfEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "curatorRewardCut",
+            "type": {
+              "defined": "SwitchboardDecimal"
+            }
+          },
+          {
+            "name": "lockLeaseFunding",
+            "type": "bool"
+          },
+          {
+            "name": "mint",
+            "type": "publicKey"
+          },
+          {
+            "name": "enableBufferRelayers",
+            "type": "bool"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 968]
+            }
+          },
+          {
+            "name": "maxSize",
+            "type": "u32"
+          },
+          {
+            "name": "dataBuffer",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CrankAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "array": ["u8", 64]
+            }
+          },
+          {
+            "name": "queuePubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "pqSize",
+            "type": "u32"
+          },
+          {
+            "name": "maxRows",
+            "type": "u32"
+          },
+          {
+            "name": "jitterModifier",
+            "type": "u8"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 255]
+            }
+          },
+          {
+            "name": "dataBuffer",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OracleAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "array": ["u8", 128]
+            }
+          },
+          {
+            "name": "oracleAuthority",
+            "type": "publicKey"
+          },
+          {
+            "name": "lastHeartbeat",
+            "type": "i64"
+          },
+          {
+            "name": "numInUse",
+            "type": "u32"
+          },
+          {
+            "name": "tokenAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "queuePubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "metrics",
+            "type": {
+              "defined": "OracleMetrics"
+            }
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 256]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "JobAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "metadata",
+            "type": {
+              "array": ["u8", 64]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "expiration",
+            "type": "i64"
+          },
+          {
+            "name": "hash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "name": "referenceCount",
+            "type": "u32"
+          },
+          {
+            "name": "totalSpent",
+            "type": "u64"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "isInitializing",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VrfAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "status",
+            "type": {
+              "defined": "VrfStatus"
+            }
+          },
+          {
+            "name": "counter",
+            "type": "u128"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "oracleQueue",
+            "type": "publicKey"
+          },
+          {
+            "name": "escrow",
+            "type": "publicKey"
+          },
+          {
+            "name": "callback",
+            "type": {
+              "defined": "CallbackZC"
+            }
+          },
+          {
+            "name": "batchSize",
+            "type": "u32"
+          },
+          {
+            "name": "builders",
+            "type": {
+              "array": [
+                {
+                  "defined": "VrfBuilder"
+                },
+                8
+              ]
+            }
+          },
+          {
+            "name": "buildersLen",
+            "type": "u32"
+          },
+          {
+            "name": "testMode",
+            "type": "bool"
+          },
+          {
+            "name": "currentRound",
+            "type": {
+              "defined": "VrfRound"
+            }
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 1024]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VrfLiteAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "stateBump",
+            "type": "u8"
+          },
+          {
+            "name": "permissionBump",
+            "type": "u8"
+          },
+          {
+            "name": "vrfPool",
+            "type": "publicKey"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "VrfStatus"
+            }
+          },
+          {
+            "name": "result",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "counter",
+            "type": "u128"
+          },
+          {
+            "name": "alpha",
+            "type": {
+              "array": ["u8", 256]
+            }
+          },
+          {
+            "name": "alphaLen",
+            "type": "u32"
+          },
+          {
+            "name": "requestSlot",
+            "type": "u64"
+          },
+          {
+            "name": "requestTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "queue",
+            "type": "publicKey"
+          },
+          {
+            "name": "escrow",
+            "type": "publicKey"
+          },
+          {
+            "name": "callback",
+            "type": {
+              "defined": "CallbackZC"
+            }
+          },
+          {
+            "name": "builder",
+            "type": {
+              "defined": "VrfBuilder"
+            }
+          },
+          {
+            "name": "expiration",
+            "type": "i64"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 1024]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VrfPoolAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "queue",
+            "type": "publicKey"
+          },
+          {
+            "name": "escrow",
+            "type": "publicKey"
+          },
+          {
+            "name": "minInterval",
+            "type": "u32"
+          },
+          {
+            "name": "maxRows",
+            "type": "u32"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "idx",
+            "type": "u32"
+          },
+          {
+            "name": "stateBump",
+            "type": "u8"
+          },
+          {
+            "name": "ebuf",
+            "type": {
+              "array": ["u8", 135]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "BufferRelayerAccountData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "queuePubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "escrow",
+            "type": "publicKey"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "jobPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "jobHash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "minUpdateDelaySeconds",
+            "type": "u32"
+          },
+          {
+            "name": "isLocked",
+            "type": "bool"
+          },
+          {
+            "name": "currentRound",
+            "type": {
+              "defined": "BufferRelayerRound"
+            }
+          },
+          {
+            "name": "latestConfirmedRound",
+            "type": {
+              "defined": "BufferRelayerRound"
+            }
+          },
+          {
+            "name": "result",
+            "type": "bytes"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [],
+  "events": [],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "ArrayOperationError",
+      "msg": "Illegal operation on a Switchboard array."
+    },
+    {
+      "code": 6001,
+      "name": "QueueOperationError",
+      "msg": "Illegal operation on a Switchboard queue."
+    },
+    {
+      "code": 6002,
+      "name": "IncorrectProgramOwnerError",
+      "msg": "An account required to be owned by the program has a different owner."
+    },
+    {
+      "code": 6003,
+      "name": "InvalidAggregatorRound",
+      "msg": "Aggregator is not currently populated with a valid round."
+    },
+    {
+      "code": 6004,
+      "name": "TooManyAggregatorJobs",
+      "msg": "Aggregator cannot fit any more jobs."
+    },
+    {
+      "code": 6005,
+      "name": "AggregatorCurrentRoundClosed",
+      "msg": "Aggregator's current round is closed. No results are being accepted."
+    },
+    {
+      "code": 6006,
+      "name": "AggregatorInvalidSaveResult",
+      "msg": "Aggregator received an invalid save result instruction."
+    },
+    {
+      "code": 6007,
+      "name": "InvalidStrDecimalConversion",
+      "msg": "Failed to convert string to decimal format."
+    },
+    {
+      "code": 6008,
+      "name": "AccountLoaderMissingSignature",
+      "msg": "AccountLoader account is missing a required signature."
+    },
+    {
+      "code": 6009,
+      "name": "MissingRequiredSignature",
+      "msg": "Account is missing a required signature."
+    },
+    {
+      "code": 6010,
+      "name": "ArrayOverflowError",
+      "msg": "The attempted action will overflow a zero-copy account array."
+    },
+    {
+      "code": 6011,
+      "name": "ArrayUnderflowError",
+      "msg": "The attempted action will underflow a zero-copy account array."
+    },
+    {
+      "code": 6012,
+      "name": "PubkeyNotFoundError",
+      "msg": "The queried public key was not found."
+    },
+    {
+      "code": 6013,
+      "name": "AggregatorIllegalRoundOpenCall",
+      "msg": "Aggregator round open called too early."
+    },
+    {
+      "code": 6014,
+      "name": "AggregatorIllegalRoundCloseCall",
+      "msg": "Aggregator round close called too early."
+    },
+    {
+      "code": 6015,
+      "name": "AggregatorClosedError",
+      "msg": "Aggregator is closed. Illegal action."
+    },
+    {
+      "code": 6016,
+      "name": "IllegalOracleIdxError",
+      "msg": "Illegal oracle index."
+    },
+    {
+      "code": 6017,
+      "name": "OracleAlreadyRespondedError",
+      "msg": "The provided oracle has already responded this round."
+    },
+    {
+      "code": 6018,
+      "name": "ProtoDeserializeError",
+      "msg": "Failed to deserialize protocol buffer."
+    },
+    {
+      "code": 6019,
+      "name": "UnauthorizedStateUpdateError",
+      "msg": "Unauthorized program state modification attempted."
+    },
+    {
+      "code": 6020,
+      "name": "MissingOracleAccountsError",
+      "msg": "Not enough oracle accounts provided to closeRounds."
+    },
+    {
+      "code": 6021,
+      "name": "OracleMismatchError",
+      "msg": "An unexpected oracle account was provided for the transaction."
+    },
+    {
+      "code": 6022,
+      "name": "CrankMaxCapacityError",
+      "msg": "Attempted to push to a Crank that's at capacity"
+    },
+    {
+      "code": 6023,
+      "name": "AggregatorLeaseInsufficientFunds",
+      "msg": "Aggregator update call attempted but attached lease has insufficient funds."
+    },
+    {
+      "code": 6024,
+      "name": "IncorrectTokenAccountMint",
+      "msg": "The provided token account does not point to the Switchboard token mint."
+    },
+    {
+      "code": 6025,
+      "name": "InvalidEscrowAccount",
+      "msg": "An invalid escrow account was provided."
+    },
+    {
+      "code": 6026,
+      "name": "CrankEmptyError",
+      "msg": "Crank empty. Pop failed."
+    },
+    {
+      "code": 6027,
+      "name": "PdaDeriveError",
+      "msg": "Failed to derive a PDA from the provided seed."
+    },
+    {
+      "code": 6028,
+      "name": "AggregatorAccountNotFound",
+      "msg": "Aggregator account missing from provided account list."
+    },
+    {
+      "code": 6029,
+      "name": "PermissionAccountNotFound",
+      "msg": "Permission account missing from provided account list."
+    },
+    {
+      "code": 6030,
+      "name": "LeaseAccountDeriveFailure",
+      "msg": "Failed to derive a lease account."
+    },
+    {
+      "code": 6031,
+      "name": "PermissionAccountDeriveFailure",
+      "msg": "Failed to derive a permission account."
+    },
+    {
+      "code": 6032,
+      "name": "EscrowAccountNotFound",
+      "msg": "Escrow account missing from provided account list."
+    },
+    {
+      "code": 6033,
+      "name": "LeaseAccountNotFound",
+      "msg": "Lease account missing from provided account list."
+    },
+    {
+      "code": 6034,
+      "name": "DecimalConversionError",
+      "msg": "Decimal conversion method failed."
+    },
+    {
+      "code": 6035,
+      "name": "PermissionDenied",
+      "msg": "Permission account is missing required flags for the given action."
+    },
+    {
+      "code": 6036,
+      "name": "QueueAtCapacity",
+      "msg": "Oracle queue is at lease capacity."
+    },
+    {
+      "code": 6037,
+      "name": "ExcessiveCrankRowsError",
+      "msg": "Data feed is already pushed on a crank."
+    },
+    {
+      "code": 6038,
+      "name": "AggregatorLockedError",
+      "msg": "Aggregator is locked, no setting modifications or job additions allowed."
+    },
+    {
+      "code": 6039,
+      "name": "AggregatorInvalidBatchSizeError",
+      "msg": "Aggregator invalid batch size."
+    },
+    {
+      "code": 6040,
+      "name": "AggregatorJobChecksumMismatch",
+      "msg": "Oracle provided an incorrect aggregator job checksum."
+    },
+    {
+      "code": 6041,
+      "name": "IntegerOverflowError",
+      "msg": "An integer overflow occurred."
+    },
+    {
+      "code": 6042,
+      "name": "InvalidUpdatePeriodError",
+      "msg": "Minimum update period is 5 seconds."
+    },
+    {
+      "code": 6043,
+      "name": "NoResultsError",
+      "msg": "Aggregator round evaluation attempted with no results."
+    },
+    {
+      "code": 6044,
+      "name": "InvalidExpirationError",
+      "msg": "An expiration constraint was broken."
+    },
+    {
+      "code": 6045,
+      "name": "InsufficientStakeError",
+      "msg": "An account provided insufficient stake for action."
+    },
+    {
+      "code": 6046,
+      "name": "LeaseInactiveError",
+      "msg": "The provided lease account is not active."
+    },
+    {
+      "code": 6047,
+      "name": "NoAggregatorJobsFound",
+      "msg": "No jobs are currently included in the aggregator."
+    },
+    {
+      "code": 6048,
+      "name": "IntegerUnderflowError",
+      "msg": "An integer underflow occurred."
+    },
+    {
+      "code": 6049,
+      "name": "OracleQueueMismatch",
+      "msg": "An invalid oracle queue account was provided."
+    },
+    {
+      "code": 6050,
+      "name": "OracleWalletMismatchError",
+      "msg": "An unexpected oracle wallet account was provided for the transaction."
+    },
+    {
+      "code": 6051,
+      "name": "InvalidBufferAccountError",
+      "msg": "An invalid buffer account was provided."
+    },
+    {
+      "code": 6052,
+      "name": "InsufficientOracleQueueError",
+      "msg": "Insufficient oracle queue size."
+    },
+    {
+      "code": 6053,
+      "name": "InvalidAuthorityError",
+      "msg": "Invalid authority account provided."
+    },
+    {
+      "code": 6054,
+      "name": "InvalidTokenAccountMintError",
+      "msg": "A provided token wallet is associated with an incorrect mint."
+    },
+    {
+      "code": 6055,
+      "name": "ExcessiveLeaseWithdrawlError",
+      "msg": "You must leave enough funds to perform at least 1 update in the lease."
+    },
+    {
+      "code": 6056,
+      "name": "InvalideHistoryAccountError",
+      "msg": "Invalid history account provided."
+    },
+    {
+      "code": 6057,
+      "name": "InvalidLeaseAccountEscrowError",
+      "msg": "Invalid lease account escrow."
+    },
+    {
+      "code": 6058,
+      "name": "InvalidCrankAccountError",
+      "msg": "Invalid crank provided."
+    },
+    {
+      "code": 6059,
+      "name": "CrankNoElementsReadyError",
+      "msg": "No elements ready to be popped."
+    },
+    {
+      "code": 6060,
+      "name": "IndexOutOfBoundsError",
+      "msg": "Index out of bounds"
+    },
+    {
+      "code": 6061,
+      "name": "VrfInvalidRequestError",
+      "msg": "Invalid vrf request params"
+    },
+    {
+      "code": 6062,
+      "name": "VrfInvalidProofSubmissionError",
+      "msg": "Vrf proof failed to verify"
+    }
+  ],
+  "metadata": {
+    "address": "6R7NVtYcaGQmvJ4F1XDL2cppJN4KrStGWkUQq2HUwDr1"
+  }
+}

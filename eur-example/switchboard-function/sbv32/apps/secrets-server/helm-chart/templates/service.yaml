@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: secrets-server-service
+spec:
+  selector:
+    app: secrets-server
+  {{ if $.Values.publicIP }}
+  type: LoadBalancer
+  loadBalancerIP: {{ $.Values.publicIP }}
+  {{ else }}
+  type: ClusterIP
+  {{ end }}
+  ports:
+    - name: server
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

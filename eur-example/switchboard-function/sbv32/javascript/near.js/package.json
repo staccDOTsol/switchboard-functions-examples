@@ -1,0 +1,75 @@
+{
+  "name": "@switchboard-xyz/near.js",
+  "version": "2.2.5",
+  "description": "API wrapper for intergating with the Switchboardv2 program on Near",
+  "homepage": "https://switchboard.xyz",
+  "bugs": {
+    "url": "http://github.com/switchboard-xyz/sbv2-near.git/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/switchboard-xyz/sbv2-near.git",
+    "directory": "javascript/near.js"
+  },
+  "license": "ISC",
+  "author": "",
+  "exports": {
+    ".": {
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "pnpm exec tsc -p tsconfig.cjs.json",
+    "build:esm": "pnpm exec tsc",
+    "clean": "pnpm exec rimraf node_modules lib .turbo",
+    "fix": "pnpm exec eslint --fix src/**/*.ts ./tests",
+    "lint": "pnpm exec eslint src/**/*.ts ./tests",
+    "prepack": "pnpm run lint && pnpm run build",
+    "publish-packages": "pnpm exec semantic-release --repository-url git@github.com:switchboard-xyz/sbv2-near.git",
+    "test:old": "pnpm exec ts-mocha -p ./tsconfig.cjs.json --require ts-node/register -t 1000000 ./tests/*.tests.ts",
+    "watch": "pnpm exec tsc -p tsconfig.cjs.json --watch"
+  },
+  "dependencies": {
+    "@switchboard-xyz/common": "workspace:^",
+    "big.js": "^6.2.1",
+    "bn.js": "^5.2.1",
+    "bs58": "^5.0.0",
+    "events": "^3.3.0",
+    "isomorphic-ws": "^5.0.0",
+    "js-sha256": "^0.9.0",
+    "lodash": "^4.17.21",
+    "near-api-js": "^2.1.4",
+    "near-lake-framework": "^1.0.4",
+    "near-units": "^0.1.9",
+    "reconnecting-websocket": "^4.4.0",
+    "wait-for-event": "^2.0.1",
+    "ws": "^8.10.0"
+  },
+  "devDependencies": {
+    "@switchboard-xyz/eslint-config": "workspace:latest",
+    "@types/big.js": "^6.1.5",
+    "@types/bn.js": "^5.1.1",
+    "@types/lodash": "^4.14.186",
+    "@types/mocha": "^10.0.0",
+    "@types/ws": "^8.5.3",
+    "assert": "^2.0.0",
+    "mocha": "^10.0.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.23.16"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

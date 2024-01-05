@@ -1,0 +1,37 @@
+{
+  "name": "sb-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "scripts used within the sbv2-core repo",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "bin": {
+    "sb-tools": "./src/index.ts"
+  },
+  "scripts": {
+    "fix": "pnpm exec eslint --fix src/**/*.ts",
+    "lint": "pnpm exec eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.28.0",
+    "@solana/web3.js": "^1.78.4",
+    "@switchboard-xyz/aptos.js": "workspace:*",
+    "@switchboard-xyz/common": "workspace:*",
+    "@switchboard-xyz/near.js": "workspace:*",
+    "@switchboard-xyz/solana.js": "workspace:*",
+    "@switchboard-xyz/task-runner": "workspace:*",
+    "chalk": "4",
+    "commander": "^9.4.0",
+    "dotenv": "^16.0.3",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@switchboard-xyz/eslint-config": "workspace:*",
+    "@types/lodash": "^4.14.186"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

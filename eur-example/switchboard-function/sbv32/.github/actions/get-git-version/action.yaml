@@ -1,0 +1,24 @@
+name: Get Git Version
+description: Get the version from the git hook
+inputs:
+  optional-tag:
+    description: an optional-tag to add to the image
+    required: false
+outputs:
+  git-version:
+    description: the image version from the git hook
+    value: ${{ steps.get-git-version.outputs.git-version }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+    - id: get-git-version
+      shell: bash
+      run: |
+        if [[ ${{ inputs.optional-tag != '' }} == 'true' ]]; then
+          echo "git-version=$(cat version)-${{ inputs.optional-tag }}" >> $GITHUB_OUTPUT
+        else
+          echo "git-version=$(cat version)" >> $GITHUB_OUTPUT
+        fi
+    - run: echo "${{ steps.get-git-version.outputs.git-version }}"
+      shell: bash

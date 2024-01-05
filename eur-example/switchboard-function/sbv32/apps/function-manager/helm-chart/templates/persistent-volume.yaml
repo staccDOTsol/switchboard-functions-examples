@@ -1,0 +1,15 @@
+{{- $values := .Values -}}
+{{- range $index, $key := $values.oracleKeys }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: function-manager-{{ $values.chain }}-{{ $key.name }}-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ if $key.dockerPersistentVolumeSize }}{{ $key.dockerPersistentVolumeSize }}{{ else }}{{ $values.dockerPersistentVolumeSize | default "50Gi" }}{{ end }}
+
+---
+{{ end }}

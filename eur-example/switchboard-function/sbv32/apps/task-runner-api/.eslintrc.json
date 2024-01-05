@@ -1,0 +1,22 @@
+{
+  "extends": "@switchboard-xyz",
+  "ignorePatterns": [
+    "build/",
+    "node_modules",
+    "../node_modules"
+  ],
+  "rules": {
+    "quotes": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "no-empty": "off",
+    "no-process-exit": "off",
+    "no-useless-catch": "off",
+    "no-useless-escape": "off",
+    "no-async-promise-executor": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "node/no-unpublished-import": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-extra-semi": "off",
+    "@typescript-eslint/no-extra-semi": "off"
+  }
+}

@@ -1,0 +1,22 @@
+[toolchain]
+
+[features]
+seeds = true
+skip-lint = false
+
+[programs.localnet]
+backfill_oracle_program = "3aiTRX5dhvWfgKa1kNwqF97jpGukMyphpj7UTcWmWfvV"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "https://switchbo-switchbo-6225.devnet.rpcpool.com/f6fb9f02-0777-498b-b8f5-67cbb1fc0d14"
+# wallet = "/Users/gally/.config/solana/id.json"
+wallet = "/Users/gally/keypairs/devnet/wallet1.json"
+
+[scripts]
+create_order = "tsx ./scripts/create_order.ts"
+init = "tsx ./scripts/init.ts"
+metrics = "tsx ./scripts/metrics.ts"
+test = "pnpm exec ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

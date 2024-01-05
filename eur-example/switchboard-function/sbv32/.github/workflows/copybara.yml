@@ -1,0 +1,38 @@
+name: Copybara
+
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        type: choice
+        required: true
+        description: The copybara action to run
+        options:
+          - core-sdk-pull
+          - core-sdk-push
+          - solana-sdk-pull
+          - solana-sdk-push
+          - evm-sdk-pull
+          - evm-sdk-push
+          - starknet-sdk-pull
+          - starknet-sdk-push
+          - secrets-server-push
+
+jobs:
+  copybara:
+    name: Copybara
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Checkout as many commits as needed for the diff
+          fetch-depth: 2
+
+      - name: Run Copybara
+        uses: olivr/copybara-action@v1.2.3
+        with:
+          ssh_key: ${{ secrets.SSH_KEY }}
+          access_token: ${{ secrets.GH_PAT_TOKEN }}
+          custom_config: copy.bara.sky
+          workflow: ${{ github.event.inputs.workflow }}

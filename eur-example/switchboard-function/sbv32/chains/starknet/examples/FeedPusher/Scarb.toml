@@ -1,0 +1,22 @@
+# Deploy Addresses:
+# Testnet: 0x0543b2861f4b7292dba5e708ef7903ae174bf6f3265fd4cd8014c18e7b53f59d
+
+[package]
+name = "feed_pusher"
+version = "0.0.0"
+authors = ["Jackson Jessup <jack@switchboard.xyz>"]
+homepage = "https://switchboard.xyz"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[cairo]
+sierra-replace-ids = true
+
+[dependencies]
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git" }
+starknet = ">=2.2.0"
+
+[tool.fmt]
+sort-module-level-items = true

@@ -1,0 +1,90 @@
+FROM rust:1.70
+
+LABEL "org.opencontainers.image.vendor"="Switchboard Labs"
+LABEL "org.opencontainers.image.title"="Solana Development Deps"
+LABEL "org.opencontainers.image.source"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.url"="https://docs.switchboard.xyz/"
+LABEL "org.opencontainers.image.description"="Container used to test Solana and Anchor programs"
+
+ARG SOLANA_VERSION=v1.16.3
+ARG ANCHOR_VERSION=v0.28.0
+
+# From https://github.com/solana-labs/solana/blob/master/ci/docker-rust/Dockerfile
+RUN set -x \
+    && apt update \
+    && apt-get install apt-transport-https \
+    && echo deb https://apt.buildkite.com/buildkite-agent stable main > /etc/apt/sources.list.d/buildkite-agent.list \
+    && apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198 \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt update \
+    && apt install -y \
+        buildkite-agent \
+        clang \
+        cmake \
+        jq \
+        lcov \
+        libudev-dev \
+        mscgen \
+        nodejs \
+        net-tools \
+        rsync \
+        sudo \
+        golang \
+        unzip \
+        lld \
+        \
+    && apt remove -y libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && node --version \
+    && npm --version \
+    && npm install --global pnpm turbo \
+    && rustup component add rustfmt \
+    && rustup component add clippy \
+    && rustup target add wasm32-unknown-unknown \
+    && cargo install cargo-audit \
+    && cargo install cargo-hack \
+    && cargo install cargo-sort \
+    && cargo install mdbook \
+    && cargo install mdbook-linkcheck \
+    && cargo install svgbob_cli \
+    && cargo install wasm-pack \
+    && cargo install sccache \
+    && rustc --version \
+    && cargo --version
+
+# # Install Build Deps
+# RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+#     --mount=target=/var/cache/apt,type=cache,sharing=locked \
+#     rm -f /etc/apt/apt.conf.d/docker-clean && \
+#     apt-get update -y && \
+#     apt-get upgrade -y && \
+#     apt-get -y --no-install-recommends install \
+#     pkg-config \
+#     build-essential \
+#     libudev-dev \
+#     clang
+
+# # Add Rust components
+# RUN rustup component add rustfmt clippy
+
+# Install Solana
+RUN sh -c "$(curl -sSfL https://release.solana.com/$SOLANA_VERSION/install)"
+ENV PATH=/root/.local/share/solana/install/active_release/bin:$PATH
+
+# Install Anchor
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag $ANCHOR_VERSION anchor-cli --locked
+
+# # Install NodeJS
+# RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+# RUN apt-get install -y nodejs
+# RUN npm install --global pnpm turbo
+
+COPY shell-exec.sh /bin/shell-exec
+RUN chmod +x /bin/shell-exec
+
+EXPOSE 8080
+EXPOSE 8899
+EXPOSE 8900
+EXPOSE 9000
+
+WORKDIR workspace/

@@ -1,0 +1,47 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "../src",
+    "../tests",
+    "../target/types/**/*",
+  ],
+  "exclude": [
+    "**/node_modules",
+    "../tests/old/**/*"
+  ],
+  "compilerOptions": {
+    "rootDir": "../",
+    "module": "ESNext",
+    "target": "es2022",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": [
+      "node",
+      "mocha",
+      "chai"
+    ],
+    "paths": {
+      "@switchboard-xyz/common": [
+        "../../../javascript/common"
+      ],
+      "@switchboard-xyz/oracle": [
+        "../../../javascript/oracle"
+      ],
+      "@switchboard-xyz/solana.js": [
+        "../../../javascript/solana.js"
+      ],
+    }
+  },
+  "references": [
+    {
+      "path": "../../../javascript/common"
+    },
+    {
+      "path": "../../../javascript/oracle"
+    },
+    {
+      "path": "../../../javascript/solana.js"
+    }
+  ]
+}

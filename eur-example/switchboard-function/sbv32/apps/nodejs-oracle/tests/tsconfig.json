@@ -1,0 +1,29 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "../src/**/*.ts",
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "**/node_modules"
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "types": [
+      "node",
+      "jest",
+      "chai"
+    ],
+    "sourceMap": true,
+    "paths": {
+      "@switchboard-xyz/task-runner": [
+        "../../../javascript/task-runner"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../../../javascript/task-runner"
+    }
+  ]
+}

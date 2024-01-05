@@ -1,0 +1,99 @@
+name: Build Docker Image
+
+description: Build and push a docker image to dockerhub with a given tag
+
+inputs:
+  image:
+    description: the image name (Ex. switchboardlabs/node)
+    required: true
+  build-context:
+    description: the build context
+    required: false
+    default: ./
+  dockerfile:
+    description: the dockerfile to use (Ex. Dockerfile.oracle)
+    required: true
+  push:
+    type: boolean
+    description: push the image to dockerhub (Ignored if branch is not main)
+    required: false
+    default: false
+  tag:
+    description: the docker image tag (Ex. RC_12_20_22_19_11)
+    required: true
+  platforms:
+    description: the docker platforms to build for (Ex. linux/amd64,linux/arm64)
+    required: false
+    default: linux/amd64
+  build-args:
+    description: optional build args to pass to docker buildx
+    required: false
+    default: ""
+  container-registry-username:
+    description: the dockerhub username to use to publish the image
+    required: true
+  container-registry-password:
+    description: the dockerhub password to use to publish the image
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ inputs.container-registry-username }}
+        password: ${{ inputs.container-registry-password }}
+
+    # - name: Set up QEMU
+    #   if: contains(${{ inputs.platforms }} , 'linux/arm')
+    #   uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        version: "lab:latest"
+        driver: cloud
+        endpoint: "switchboardlabs/default"
+
+    - name: Set up tags
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ inputs.image }}
+        flavor: |
+          latest=false
+        tags: |
+          type=ref,enable=true,priority=600,prefix=,suffix=,event=tag
+        labels: |
+          org.opencontainers.image.vendor=SwitchboardLabs
+
+    - name: Build and push image with build args to container registry
+      uses: docker/build-push-action@v5
+      if: ${{ inputs.build-args != ''}}
+      with:
+        context: ${{ inputs.build-context }}
+        file: ${{ inputs.dockerfile }}
+        build-args: ${{ inputs.build-args }}
+        platforms: ${{ inputs.platforms }}
+        push: ${{ inputs.push  }}
+        tags: docker.io/${{ inputs.image }}:dev-${{ inputs.tag }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=registry,ref=${{ inputs.image }}:buildcache
+        cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
+
+    - name: Build and push image to container registry
+      uses: docker/build-push-action@v5
+      if: ${{ inputs.build-args == ''}}
+      with:
+        context: ${{ inputs.build-context }}
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        push: ${{ inputs.push }}
+        tags: docker.io/${{ inputs.image }}:dev-${{ inputs.tag }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=registry,ref=${{ inputs.image }}:buildcache
+        cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
+        # At some point we should move to using GH Action cache
+        # cache-from: type=gha
+        # cache-to: type=gha,mode=max

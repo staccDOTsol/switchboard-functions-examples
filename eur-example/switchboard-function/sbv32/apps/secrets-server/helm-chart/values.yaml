@@ -1,0 +1,7 @@
+# ####################################################
+# USE THIS FILE FOR ANY DEFAULT VALUES FOR ALL ORACLES
+# ####################################################
+image: ""
+publicIP: ""
+databaseUrl: ""
+host: ""

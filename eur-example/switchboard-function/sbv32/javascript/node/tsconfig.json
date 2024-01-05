@@ -1,0 +1,63 @@
+{
+  "include": [
+    "./src/**/*",
+    "./src/**/*.js"
+  ],
+  "exclude": [
+    "test/**/*",
+    "lib",
+    "node_modules"
+  ],
+  "files": [
+    "src/index.ts"
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "lib",
+    "rootDir": "./src",
+    "target": "es2022",
+    "lib": [
+      "ES2021",
+      "ES2022.Object",
+      "DOM"
+    ],
+    "moduleResolution": "nodenext",
+    "composite": true,
+    "inlineSources": true,
+    "inlineSourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": [
+      "node",
+      "chai",
+      "jest"
+    ],
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noImplicitAny": true
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "src/index.ts",
+      "src/modules/aws/index.ts",
+      "src/modules/azure/index.ts",
+      "src/modules/docker/index.ts",
+      "src/modules/events/index.ts",
+      "src/modules/fs/index.ts",
+      "src/modules/gcp/index.ts",
+      "src/modules/logging/index.ts",
+      "src/modules/performance/index.ts",
+      "src/modules/alerts/console.ts",
+      "src/modules/alerts/discord.ts",
+      "src/modules/alerts/pager-duty.ts",
+      "src/modules/alerts/slack-pager.ts"
+    ]
+  }
+}

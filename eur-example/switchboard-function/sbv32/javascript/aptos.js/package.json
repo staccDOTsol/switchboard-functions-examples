@@ -1,0 +1,64 @@
+{
+  "name": "@switchboard-xyz/aptos.js",
+  "version": "2.6.11",
+  "description": "API wrapper for intergating with the Switchboardv2 program on Aptos",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/switchboard-xyz/sbv2-aptos.git",
+    "directory": "packages/aptos.js"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "sbv2-aptos.ts",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "shx rm -rf lib || true; pnpm exec tsc -p tsconfig.cjs.json && pnpm exec tsc",
+    "clean": "pnpm exec rimraf node_modules lib .turbo",
+    "fix": "pnpm exec eslint --fix src/**/*.ts ./tests",
+    "lint": "pnpm exec eslint src/**/*.ts ./tests",
+    "prepack": "npm run lint && npm run build",
+    "test": "node ./node_modules/mocha/bin/mocha --loader=ts-node/esm --extension ts --timeout 10000 ./tests/*.tests.ts",
+    "watch": "pnpm exec tsc -p tsconfig.cjs.json --watch"
+  },
+  "dependencies": {
+    "@switchboard-xyz/common": "workspace:^",
+    "aptos": "^1.11.0",
+    "big.js": "^6.2.1",
+    "bn.js": "^5.2.1",
+    "chalk": "^5.0.1",
+    "js-sha3": "^0.8.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.1.6"
+  },
+  "devDependencies": {
+    "@switchboard-xyz/eslint-config": "workspace:latest",
+    "@types/big.js": "^6.1.6",
+    "@types/bn.js": "^5.1.0",
+    "@types/lodash": "^4.14.195",
+    "@types/mocha": "^10.0.1",
+    "@types/node-fetch": "^2.6.2",
+    "@types/yargs": "^17.0.11",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "yaml": "^2.1.1",
+    "yargs": "^17.5.1"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

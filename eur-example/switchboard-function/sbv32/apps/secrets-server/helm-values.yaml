@@ -1,0 +1,4 @@
+image: "docker.io/switchboardlabs/secrets-server:dev-RC_12_29_23_20_14"
+# publicIP: "20.117.146.171"
+databaseUrl: "postgres://dev:iloveoracles@35.224.111.117:5432/secrets"
+host: "api.secrets.switchboard.xyz"

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "tsconfig/base.json",
+  "files": [],
+  "compilerOptions": {
+    "module": "NodeNext"
+  },
+  "references": [
+    {
+      "path": "javascript/aptos.js"
+    },
+    {
+      "path": "javascript/cli"
+    },
+    {
+      "path": "javascript/common"
+    },
+    {
+      "path": "javascript/evm.js"
+    },
+    {
+      "path": "javascript/near.js"
+    },
+    {
+      "path": "javascript/node"
+    },
+    {
+      "path": "javascript/oracle"
+    },
+    {
+      "path": "javascript/pager-function"
+    },
+    {
+      "path": "javascript/sb-tools"
+    },
+    {
+      "path": "javascript/sbv2-lite"
+    },
+    {
+      "path": "javascript/solana.js"
+    },
+    {
+      "path": "javascript/sui.js"
+    },
+    {
+      "path": "javascript/task-runner"
+    },
+    {
+      "path": "apps/task-runner-api"
+    },
+    {
+      "path": "apps/nodejs-oracle"
+    },
+    {
+      "path": "apps/alerting-server"
+    }
+  ]
+}

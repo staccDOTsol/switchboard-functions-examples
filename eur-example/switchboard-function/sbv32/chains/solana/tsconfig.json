@@ -1,0 +1,49 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "tests",
+    "scripts",
+    "tests.old/wallet.spec.ts"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "es2022",
+    "checkJs": false,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "lib": [
+      "ES2021",
+      "ES2022.Object",
+      "DOM"
+    ],
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@switchboard-xyz/common": [
+        "../../javascript/common"
+      ],
+      "@switchboard-xyz/oracle": [
+        "../../javascript/oracle"
+      ],
+      "@switchboard-xyz/solana.js": [
+        "../../javascript/solana.js"
+      ],
+    }
+  },
+  "references": [
+    {
+      "path": "../../javascript/common"
+    },
+    {
+      "path": "../../javascript/oracle"
+    },
+    {
+      "path": "../../javascript/solana.js"
+    }
+  ]
+}

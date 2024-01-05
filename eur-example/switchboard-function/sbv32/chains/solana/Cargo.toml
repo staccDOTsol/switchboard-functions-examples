@@ -1,0 +1,23 @@
+[workspace]
+members = [
+  "programs/switchboard_v2",
+  "programs/attestation_program",
+]
+exclude = [
+  "examples/feeds/01_feed_client",
+  "examples/feeds/02_spl_native",
+  "examples/functions/01_basic_oracle",
+  "examples/functions/02_liquidity_oracle",
+  "examples/functions/03_candles_oracle",
+  "examples/functions/04_randomness_callback",
+  "examples/vrf/01_vrf_client",
+]
+
+# https://twitter.com/zhouzhuojie/status/1619078510697676800
+[profile.release]
+overflow-checks = true
+strip = true
+opt-level = "z"
+lto = true
+panic = 'abort'
+codegen-units = 1

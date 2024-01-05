@@ -1,0 +1,22 @@
+FROM node:18-slim
+
+RUN apt-get update && apt-get install curl -y \
+    # needed for healthcheck
+    ca-certificates wget
+ENV NODE_ENV production
+
+# # FINAL IMAGE
+WORKDIR /home/node/sbv2-oracle
+RUN npm install -g typescript ts-node
+COPY --chown=node:node --from=switchboardlabs/ecvrf /rust-ecvrf /usr/local/bin/
+# COPY . .
+# COPY node_modules/ ./node_modules/
+COPY ./dist/oracle/ ./dist/
+USER node
+EXPOSE 8080
+EXPOSE 9000
+HEALTHCHECK --interval=60s --timeout=10s --start-period=30s \
+    CMD curl --fail http://localhost:8080/healthz || exit 1
+CMD ["node", "--unhandled-rejections=warn", "./dist/index.js"]
+# CMD ["ts-node",  "./src/apps/oracle/index.ts"]
+#
