@@ -20,14 +20,14 @@ declare_id!("BUhaGyJbdbfV24BiW2GPjtqeUhkMZ2E9bYuu34pB8YEs");
 pub const PROGRAM_SEED: &[u8] = b"SPOTIFY_EXAMPLE";
 pub const ORACLE_SEED: &[u8] = b"SPOTIFY_EXAMPLE_ORACLE";
 
-fn from_u8_array(input: &[u8; 32]) -> String {
-    let mut array = [0u8; 32];
+fn from_u8_array(input: &[u8; 512]) -> String {
+    let mut array = [0u8; 512];
     array.copy_from_slice(&input[..]);
     String::from_utf8(array.to_vec()).unwrap()
 }
 
 #[program]
-pub mod usdy_usd_oracle {
+pub mod spotify_example {
 
     use super::*;
 
@@ -38,7 +38,7 @@ pub mod usdy_usd_oracle {
     }
 
     pub fn initialize(ctx: Context<Initialize>, bump: u8, bump2: u8) -> anchor_lang::Result<()> {
-        let program = &mut ctx.accounts.program.load_init()?;
+        let program = &mut ctx.accounts.program.load_init()?; // initally load_init
         program.bump = bump;
         program.authority = ctx.accounts.authority.key();
     
@@ -46,6 +46,7 @@ pub mod usdy_usd_oracle {
         program.switchboard_function = ctx.accounts.switchboard_function.key();
     
         let oracle = &mut ctx.accounts.oracle.load_init()?;
+        oracle.authority = ctx.accounts.authority.key();
         oracle.bump = bump2;
     
         Ok(())
@@ -76,7 +77,7 @@ pub struct Initialize<'info> {
         init_if_needed,
         space = 8 + std::mem::size_of::<MyProgramState>(),
         payer = payer,
-        seeds = [PROGRAM_SEED],
+        seeds = [PROGRAM_SEED, switchboard_function.key().as_ref()],
         bump
     )]
     pub program: AccountLoader<'info, MyProgramState>,
@@ -85,7 +86,7 @@ pub struct Initialize<'info> {
         init_if_needed,
         space = 8 + std::mem::size_of::<MyOracleState>(),
         payer = payer,
-        seeds = [ORACLE_SEED, authority.key().as_ref()],
+        seeds = [ORACLE_SEED, switchboard_function.key().as_ref(), authority.key().as_ref()],
         bump
     )]
     pub oracle: AccountLoader<'info, MyOracleState>,
@@ -108,7 +109,7 @@ pub struct SetArtists<'info> {
     // We need this to validate that the Switchboard Function passed to our program
     // is the expected one.
     #[account(
-        seeds = [PROGRAM_SEED],
+        seeds = [PROGRAM_SEED, switchboard_function.key().as_ref()],
         bump = program.load()?.bump,
         has_one = switchboard_function
     )]
@@ -116,7 +117,7 @@ pub struct SetArtists<'info> {
 
     #[account(
         mut,
-        seeds =  [ORACLE_SEED, oracle.load()?.authority.as_ref()],
+        seeds =  [ORACLE_SEED, switchboard_function.key().as_ref(), oracle.load()?.authority.as_ref()],
         bump = oracle.load()?.bump
     )]
     pub oracle: AccountLoader<'info, MyOracleState>,
@@ -142,13 +143,13 @@ pub struct MyProgramState {
 pub struct MyOracleState {
     pub bump: u8, 
     pub authority: Pubkey,
-    pub top_spotify_artists: [u8; 32],
-    pub _buffer: [u8; 512],
+    pub top_spotify_artists: [u8; 512],
+    pub _buffer: [u8; 32],
 
 }
 #[derive(Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct SetArtistsParams {
-    pub artists: [u8; 32],
+    pub artists: [u8; 512],
 }
 
 #[error_code]

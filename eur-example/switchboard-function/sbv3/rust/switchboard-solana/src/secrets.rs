@@ -3,7 +3,7 @@ use aes_gcm::{aead::Aead, Aes256Gcm, Key, KeyInit, Nonce};
 use rand::rngs::OsRng;
 use reqwest::StatusCode;
 use rsa::{pkcs8::ToPublicKey, PaddingScheme, RsaPrivateKey, RsaPublicKey};
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 use serde_json;
 use serde_json::json;
 use std::collections::HashMap;
@@ -46,6 +46,14 @@ fn handle_reqwest_err(e: reqwest::Error) -> SbError {
     }
 }
 
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+struct PutUserSecretPayload {
+    user_pubkey: String,
+    ciphersuite: String,
+    secret: String,
+    secret_name: String,
+    timestamp: u64,
+}
 /// `put_secret`: to be used in conjunction with the Switchboard Secrets Server stack.
 ///
 /// When hosting your own secrets server, you may list the MR_ENCLAVE of the
@@ -72,14 +80,18 @@ pub async fn put_secret(fn_authority: &str, secret_name: &str, secret: &str, url
         Some(value) => value,
         None => "https://api.secrets.switchboard.xyz/secret",
     };
-    
-    // Build and send request to update the secret
-    let payload = json!({
-        "user_pubkey": fn_authority,
-        "ciphersuite": "ed25519",
-        "secret_name": secret_name,
-        "secret": secret,
-    });
+
+    let payload = PutUserSecretPayload {
+        user_pubkey: fn_authority.to_string(),
+        ciphersuite: "ed25519".to_string(),
+        secret: secret.to_string(),
+        secret_name: secret_name.to_string(),
+        timestamp: std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs(),
+    };
+
     let response = reqwest::Client::new()
         .put(secrets_server_url)
         .json(&payload)

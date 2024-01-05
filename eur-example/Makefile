@@ -5,8 +5,8 @@
 .PHONY: build publish
 
 # Variables
-DOCKERHUB_ORGANIZATION ?= jrsdunn
-NAME = eur_usd
+DOCKERHUB_ORGANIZATION ?= switchboardlabs
+NAME = spotify
 VERSION = latest
 
 check_docker_env:
@@ -38,13 +38,13 @@ measurement: check_docker_env
 	@docker rm my-switchboard-function > /dev/null
 
 docker_build: check_docker_env
-	docker buildx build --pull --platform linux/amd64 \
+	docker buildx build --pull --platform linux/amd64  --builder hydrobuild \
 		-f ./switchboard-function/Dockerfile \
 		-t ${DOCKERHUB_ORGANIZATION}/${NAME}:${VERSION} \
-		./ --tag qvn --builder hydrobuild
+		./  --builder hydrobuild
 docker_publish: check_docker_env
-	docker buildx build --pull --platform linux/amd64 \
+	docker buildx build --pull --platform linux/amd64  --builder hydrobuild \
 		-f ./switchboard-function/Dockerfile \
 		-t ${DOCKERHUB_ORGANIZATION}/${NAME}:${VERSION} \
 		--push \
-		./ --tag qvn --builder hydrobuild
+		./  --builder hydrobuild

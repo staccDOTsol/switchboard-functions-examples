@@ -32,8 +32,21 @@ dotenv.config();
 
   const switchboardProgram = await SwitchboardProgram.fromProvider(provider);
 
+  const attestationQueueAccount = await loadDefaultQueue(switchboardProgram);
+  console.log(`ATTESTATION_QUEUE: ${attestationQueueAccount.publicKey}`);
+
+  // Create the instructions to initialize our Switchboard Function
+  const [functionAccount, functionInit] =
+    await attestationQueueAccount.createFunctionInstruction(payer.publicKey, {
+      container: `${process.env.DOCKERHUB_ORGANIZATION ?? "switchboardlabs"}/${
+        process.env.DOCKERHUB_CONTAINER_NAME ?? "spotify"
+      }`,
+      version: `${process.env.DOCKERHUB_CONTAINER_VERSION ?? "latest"}`, // TODO: set to 'latest' after testing
+    });
+  console.log(`SWITCHBOARD_FUNCTION: ${(new PublicKey("ELk3QL3Rj56vVYELmYNk3zKMzxXBZJF3QE9gKu2rGSoM"))}`);
+
   const [programStatePubkey, b1] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from("SPOTIFY_EXAMPLE")],
+    [Buffer.from("SPOTIFY_EXAMPLE"), (new PublicKey("ELk3QL3Rj56vVYELmYNk3zKMzxXBZJF3QE9gKu2rGSoM")).toBuffer()],
     program.programId
   );
   console.log(`PROGRAM_STATE: ${programStatePubkey}`);
@@ -43,17 +56,18 @@ let switchboard: SwitchboardProgram = await SwitchboardProgram.fromProvider(
   provider
 );
 const [oracle, b2] = anchor.web3.PublicKey.findProgramAddressSync(
-  [Buffer.from("SPOTIFY_EXAMPLE_ORACLE"), payer.publicKey.toBuffer()],
+  [Buffer.from("SPOTIFY_EXAMPLE_ORACLE"), (new PublicKey("ELk3QL3Rj56vVYELmYNk3zKMzxXBZJF3QE9gKu2rGSoM")).toBuffer(), payer.publicKey.toBuffer()],
   program.programId
 );
 console.log(`ORACLE_PUBKEY: ${oracle}`);
 let oracle_account_info_maybe = await provider.connection.getAccountInfo(oracle);
 if (oracle_account_info_maybe){
-  let oracle_account_data = program.account.oracle.fetch(oracle);
-  console.log(`ORACLE_ACCOUNT_DATA: ${oracle_account_data}`);
+  let oracle_account_data = await program.account.myOracleState.fetch(oracle);
+  console.log(`ORACLE_ACCOUNT_DATA`);
+  console.log(oracle_account_data);
 
   const signature = await program.methods
-    .get_artists()
+    .getArtists()
     .accounts({
       oracle
     })
@@ -62,19 +76,6 @@ if (oracle_account_info_maybe){
   console.log(signature);
 }
 
-  const attestationQueueAccount = await loadDefaultQueue(switchboardProgram);
-  console.log(`ATTESTATION_QUEUE: ${attestationQueueAccount.publicKey}`);
-
-  // Create the instructions to initialize our Switchboard Function
-  const [functionAccount, functionInit] =
-    await attestationQueueAccount.createFunctionInstruction(payer.publicKey, {
-      container: `${process.env.DOCKERHUB_ORGANIZATION ?? "switchboardlabs"}/${
-        process.env.DOCKERHUB_CONTAINER_NAME ?? "solana-ondo-oracle-function"
-      }`,
-      version: `${process.env.DOCKERHUB_CONTAINER_VERSION ?? "latest"}`, // TODO: set to 'latest' after testing
-    });
-  console.log(`SWITCHBOARD_FUNCTION: ${functionAccount.publicKey}`);
-
   const signature = await program.methods
     .initialize(b1, b2) //initialize 
     .accounts({
@@ -82,7 +83,7 @@ if (oracle_account_info_maybe){
       program: programStatePubkey,
       authority: payer.publicKey,
       payer: payer.publicKey,
-      switchboardFunction: functionAccount.publicKey,
+      switchboardFunction: (new PublicKey("ELk3QL3Rj56vVYELmYNk3zKMzxXBZJF3QE9gKu2rGSoM")),
     })
     .signers([...functionInit.signers])
     .preInstructions([...functionInit.ixns])
